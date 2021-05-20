@@ -3,7 +3,8 @@
   "schematics": {
     "ng-add": {
       "description": "A blank schematic.",
-      "factory": "./nightwatchjs/index"
+      "factory": "./nightwatchjs/index",
+      "schema": "./nightwatchjs/schema.json"
     }
   }
 }
