@@ -2,7 +2,7 @@
 src/**/*.js
 src/**/*.js.map
 src/**/*.d.ts
-!src/nightwatchjs/files/*
+!src/*/files/**/*
 
 # IDEs
 .idea/
