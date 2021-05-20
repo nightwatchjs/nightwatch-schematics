@@ -1,4 +1,13 @@
-import { chain, Rule, SchematicContext, Tree } from '@angular-devkit/schematics';
+import {
+  apply,
+  chain,
+  mergeWith,
+  move,
+  Rule,
+  SchematicContext,
+  Tree,
+  url,
+} from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { map, concatMap } from 'rxjs/operators';
 import { Observable, of, concat } from 'rxjs';
@@ -17,7 +26,7 @@ export default function (_options: SchematicsOptions): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     _options = { ..._options, __version__: getAngularVersion(tree) };
 
-    return chain([updateDependencies(_options)]);
+    return chain([updateDependencies(_options), addNightwatchJsConfigFile()]);
   };
 }
 
@@ -62,5 +71,13 @@ function updateDependencies(options: any): Rule {
       return concat(removeDependencies, addDependencies);
     }
     return concat(addDependencies);
+  };
+}
+
+function addNightwatchJsConfigFile(): Rule {
+  return (tree: Tree, context: SchematicContext) => {
+    context.logger.debug('adding Nightwatchjs config file to host dir');
+
+    return chain([mergeWith(apply(url('./files'), [move('./')]))])(tree, context);
   };
 }
