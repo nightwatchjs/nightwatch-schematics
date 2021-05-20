@@ -1,9 +1,9 @@
 {
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
-    "nightwatchjs-schematics": {
+    "ng-add": {
       "description": "A blank schematic.",
-      "factory": "./nightwatchjs/index#nightwatchjsSchematics"
+      "factory": "./nightwatchjs/index"
     }
   }
 }

@@ -4,7 +4,11 @@
   "description": "A blank schematics",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "test": "npm run build && jasmine src/**/*_spec.js"
+    "test": "npm run build && jasmine src/**/*_spec.js",
+    "clean": "git checkout HEAD -- sandbox && git clean -f -d sandbox",
+    "link:sandbox": "npm link && cd sandbox && npm link $npm_package_name",
+    "unlink:sandbox": "cd sandbox && npm unlink $npm_package_name && cd .. && npm unlink",
+    "dev": "npm run build && npm run link:sandbox && cd sandbox && ng add nightwatchjs-schematics"
   },
   "keywords": [
     "schematics"
@@ -13,8 +17,8 @@
   "license": "MIT",
   "schematics": "./src/collection.json",
   "dependencies": {
-    "@angular-devkit/core": "^12.0.0",
-    "@angular-devkit/schematics": "^12.0.0",
+    "@angular-devkit/core": "^12.0.1",
+    "@angular-devkit/schematics": "^12.0.1",
     "typescript": "~4.1.2"
   },
   "devDependencies": {
