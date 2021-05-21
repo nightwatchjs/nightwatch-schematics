@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
     "ng-add": {
-      "description": "A blank schematic.",
+      "description": "Adds Nightwatchjs to an existing Angular CLI project",
       "factory": "./nightwatchjs/index",
       "schema": "./nightwatchjs/schema.json"
     }

@@ -1,12 +1,20 @@
-# Getting Started With Schematics
+# Nightwatchjs Angular Schematics
 
-This repository is a basic Schematic implementation that serves as a starting point to create and publish Schematics to NPM.
+Add [Nightwatchjs](https://nightwatchjs.org/) to an Angular CLI Project.
+
+This Schematic will:
+
+- install Nightwatchjs,  it's dependencies and config files
+- add necessary files for Nightwatchjs to work with Angular & Typescript
+- prompt for removal of Protractor files and configuration
+
 
 ### Testing
 
 To test locally, install `@angular-devkit/schematics-cli` globally and use the `schematics` command line tool. That tool acts the same as the `generate` command of the Angular CLI, but also has a debug mode.
 
 Check the documentation with
+
 ```bash
 schematics --help
 ```
@@ -25,4 +33,3 @@ npm publish
 ```
 
 That's it!
- 

@@ -1,7 +1,7 @@
 {
   "name": "nightwatchjs-schematics",
-  "version": "0.0.0",
-  "description": "A blank schematics",
+  "version": "0.0.1",
+  "description": "Adds Nightwatchjs to an existing Angular CLI project",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "test": "npm run build && jasmine src/**/*_spec.js",
