@@ -4,9 +4,5 @@
     "outDir": "../out-tsc/nightwatchjs",
     "module": "commonjs",
     "target": "es5",
-    "types": [
-      "jasmine",
-      "node"
-    ]
   }
 }
