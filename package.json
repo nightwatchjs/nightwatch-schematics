@@ -10,22 +10,27 @@
     "execute:prod": "npm run build && schematics .:ng-add --dry-run=false",
     "link:sandbox": "npm link && cd sandbox && npm link $npm_package_name",
     "unlink:sandbox": "cd sandbox && npm unlink $npm_package_name && cd .. && npm unlink",
-    "dev": "npm run build && npm run link:sandbox && cd sandbox && ng add nightwatchjs-schematics"
+    "dev": "npm run build && npm run link:sandbox && cd sandbox && ng add nightwatchjs-schematics",
+    "dev:build": "cd sandbox && npm link ../ && ng run sandbox:nightwatch"
   },
   "keywords": [
     "schematics"
   ],
   "author": "",
   "license": "MIT",
+  "builders": "./src/builders/builders.json",
   "schematics": "./src/schematics/collection.json",
   "dependencies": {
+    "@angular-devkit/architect": "^0.1200.1",
     "@angular-devkit/core": "^12.0.1",
     "@angular-devkit/schematics": "^12.0.1",
+    "@schematics/angular": "^12.0.1",
     "typescript": "~4.1.2"
   },
   "devDependencies": {
-    "@types/node": "^12.11.1",
     "@types/jasmine": "~3.5.0",
-    "jasmine": "^3.5.0"
+    "@types/node": "^12.11.1",
+    "jasmine": "^3.5.0",
+    "nightwatch": "^1.6.4"
   }
 }
