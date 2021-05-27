@@ -11,7 +11,7 @@
     "link:sandbox": "npm link && cd sandbox && npm link $npm_package_name",
     "unlink:sandbox": "cd sandbox && npm unlink $npm_package_name && cd .. && npm unlink",
     "dev": "npm run build && npm run link:sandbox && cd sandbox && ng add nightwatchjs-schematics",
-    "dev:build": "cd sandbox && npm link ../ && ng run sandbox:nightwatch"
+    "dev:build": "cd sandbox && npm link ../ && ng run sandbox:nightwatch-run"
   },
   "keywords": [
     "schematics"

@@ -33,7 +33,43 @@ export default function (_options: SchematicsOptions): Rule {
       updateDependencies(_options),
       _options.removeProtractor ? removeFiles() : noop,
       addNightwatchJsConfigFile(),
+      !_options.noBuilder ? modifyAngularJson(_options) : noop(),
     ])(tree, _context);
+  };
+}
+
+function modifyAngularJson(options: any): Rule {
+  return (tree: Tree, context: SchematicContext) => {
+    if (tree.exists('./angular.json')) {
+      const angularJsonVal = getAngularJsonValue(tree);
+      const { projects } = angularJsonVal;
+      if (!projects) {
+        throw new SchematicsException('projects in angular.json is not defined');
+      }
+
+      Object.keys(projects).forEach((project) => {
+        const NightwatchRunJson = {
+          builder: 'nightwatchjs-schematics:nightwatch',
+          options: {
+            devServerTarget: `${project}:serve`,
+          },
+          configurations: {
+            production: {
+              devServerTarget: `${project}:serve:production`,
+            },
+          },
+        };
+
+        context.logger.debug(`Adding Nighjtwatch command in angular.json`);
+        const projectArchitectJson = angularJsonVal['projects'][project]['architect'];
+        projectArchitectJson['nightwatch-run'] = NightwatchRunJson;
+        if (options.removeProtractor) {
+          projectArchitectJson['e2e'] = NightwatchRunJson;
+        }
+
+        return tree.overwrite('./angular.json', JSON.stringify(angularJsonVal, null, 2));
+      });
+    }
   };
 }
 
