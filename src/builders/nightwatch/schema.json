@@ -3,6 +3,10 @@
   "description": "Nightwatch target option for Build Facade",
   "type": "object",
   "properties": {
+    "devServerTarget": {
+      "type": "string",
+      "description": "Dev server target to run tests against."
+    },
     "testSource": {
       "type": "string",
       "description": "Use this to pass directly the address of your distant server address with the port running your application"
