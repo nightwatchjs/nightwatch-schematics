@@ -8,7 +8,8 @@ import {
 import { NightwatchBuilderOption } from './nightwatch-builder-options';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-const Nightwatch = require('nightwatch');
+import * as path from 'path';
+import * as childProcess from 'child_process';
 
 export default createBuilder<NightwatchBuilderOption>(runNightwatch);
 
@@ -18,62 +19,14 @@ async function runNightwatch(
 ): Promise<any> {
   options.environment = options.environment || 'default';
 
+  const NightWatchTestPath = `${context.workspaceRoot}/nightwatch`;
   const NightWatchConfigPath = `${context.workspaceRoot}/nightwatch.conf.js`;
-  const NightWatchConfig = require(NightWatchConfigPath);
+  const NightwatchLauncher = path.join(process.cwd(), 'node_modules', '.bin', 'nightwatch');
+  const compileCommand = `cd ${NightWatchTestPath}; tsc -p tsconfig.e2e.json;`;
+  const nightwatchRunCommand = `${NightwatchLauncher} -e chrome -c ${NightWatchConfigPath};`;
 
-  let result: BuilderOutput | undefined;
-
-  interface argvType {
-    _source?: string[];
-    e?: string;
-    env?: string;
-    c?: string;
-    config?: string;
-    _: string[];
-  }
-
-  try {
-    Nightwatch.cli(async function (argv: argvType) {
-      argv._source = argv['_'].slice(0);
-
-      argv.e = 'chrome';
-      argv.env = 'chrome';
-      argv.c = NightWatchConfigPath;
-      argv.config = NightWatchConfigPath;
-      argv._source = NightWatchConfig.src_folders;
-      console.log(NightWatchConfig);
-      console.log(NightWatchConfig.test_settings.chrome.webdriver);
-
-      console.log(argv);
-
-      const runner = Nightwatch.CliRunner(argv);
-
-      try {
-        await runner.setup().startWebDriver();
-        result = runner.runTests().then(
-          (exitCode: any) => ({
-            success: exitCode === 0,
-          }),
-          (err: any) => ({
-            error: err.message,
-            success: false,
-          })
-        );
-      } catch (error) {
-        console.log(error);
-      }
-      await runner.stopWebDriver();
-    });
-  } catch (error) {
-    console.log(error);
-
-    result = {
-      error: error.message,
-      success: false,
-    };
-  } finally {
-    return result;
-  }
+  runCommand(compileCommand, context);
+  return runCommand(nightwatchRunCommand, context);
 }
 
 export function startDevServer(
@@ -92,4 +45,23 @@ export function startDevServer(
       return output.baseUrl as string;
     })
   );
+}
+
+function runCommand(command: string, context: BuilderContext): Promise<BuilderOutput> {
+  return new Promise<BuilderOutput>((resolve, reject) => {
+    context.reportStatus(`Running ${command} ...`);
+
+    try {
+      const child = childProcess.spawnSync(`${command}`, [], { shell: true, encoding: 'utf-8' });
+      context.logger.info(child.stdout);
+      if (child.status === 0) {
+        return resolve({ success: true });
+      } else {
+        resolve({ success: false });
+      }
+    } catch (error) {
+      context.logger.error(error);
+      reject();
+    }
+  });
 }
