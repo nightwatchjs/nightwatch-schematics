@@ -1,19 +1,82 @@
 {
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "SchematicsBuilder",
   "title": "Nightwatch Target",
   "description": "Nightwatch target option for Build Facade",
   "type": "object",
   "properties": {
+    "env": {
+      "type": "string",
+      "description": "Environment name",
+      "default": "default"
+    },
+    "config": {
+      "type": "string",
+      "description": "Path to configuration file"
+    },
+    "test": {
+      "type": "string",
+      "description": "Runs only the specified test suite/module. By default the runner will attempt to run all tests in the src_folders settings folder(s) and their subfolders."
+    },
+    "testcase": {
+      "type": "string",
+      "description": "Used only together with --test. Runs the specified testcase from the current suite/module."
+    },
+    "group": {
+      "type": "string",
+      "description": "Runs only the specified group or several (comma separated) of tests (subfolder). Tests are grouped by being placed in the same subfolder."
+    },
+    "skipgroup": {
+      "type": "string",
+      "description": "Skip one or several (comma separated) group of tests."
+    },
+    "filter": {
+      "type": "string",
+      "description": "Specify a filter (glob expression) as the file name format to use when loading the test files."
+    },
+    "tag": {
+      "type": "string",
+      "description": "Filter test modules by tags. Only tests that have the specified tags will be loaded."
+    },
+    "skiptags": {
+      "type": "string",
+      "description": "Skips tests that have the specified tag or tags (comma separated)."
+    },
+    "retries": {
+      "type": "number",
+      "description": "Retries failed or errored testcases up to the specified number of times. Retrying a testcase will also retry the beforeEach and afterEach hooks, if any."
+    },
+    "suiteRetries": {
+      "type": "number",
+      "description": "Retries failed or errored testsuites (test modules) up to the specified number of times. Retrying a testsuite will also retry the before and after hooks (in addition to the global beforeEach and afterEach respectively), if any are defined on the testsuite."
+    },
+    "timeout": {
+      "type": "number",
+      "description": "Set the global timeout for assertion retries before an assertion fails. The various timeout values are defined in the Globals section."
+    },
+    "reporter": {
+      "type": "string",
+      "description": "Name of a predefined reporter (e.g. junit) or path to a custom reporter file to use.",
+      "default": "junit"
+    },
+    "output": {
+      "type": "string",
+      "description": "The location where the JUnit XML reports will be saved.",
+      "default": "tests_output"
+    },
+    "headless": {
+      "type": "boolean",
+      "description": "Launch the browser (Chrome or Firefox) in headless mode.",
+      "default": false
+    },
+    "verbose": {
+      "type": "boolean",
+      "description": "Shows extended selenium command logging during the session",
+      "default": false
+    },
     "devServerTarget": {
       "type": "string",
       "description": "Dev server target to run tests against."
-    },
-    "testSource": {
-      "type": "string",
-      "description": "Use this to pass directly the address of your distant server address with the port running your application"
-    },
-    "settings": {
-      "type": "string",
-      "description": "You can specify a path to a JSON file where configuration values are set or you can pass false to disable the use of a configuration file entirely."
     }
   },
   "additionalProperties": true

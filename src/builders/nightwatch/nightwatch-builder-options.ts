@@ -1,12 +1,22 @@
 import { JsonObject } from '@angular-devkit/core';
 
-interface SourceArray {
-  [index: string]: string;
-}
-
 export interface NightwatchBuilderOption extends JsonObject {
-  environment: string;
+  env: string;
   config: string;
-  source: SourceArray;
+  test: string;
+  testcase: string;
+  group: string;
+  skipgroup: string;
+  filter: string;
+  tag: string;
+  skiptags: string;
+  retries: number;
+  suiteRetries: number;
+  timeout: number;
+  reporter: string;
+  output: string;
+  headless: boolean;
+  verbose: boolean;
+  tsConfig: string;
   devServerTarget: string;
 }

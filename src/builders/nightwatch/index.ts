@@ -1,13 +1,5 @@
-import {
-  BuilderContext,
-  BuilderOutput,
-  createBuilder,
-  scheduleTargetAndForget,
-  targetFromTargetString,
-} from '@angular-devkit/architect';
+import { BuilderContext, BuilderOutput, createBuilder } from '@angular-devkit/architect';
 import { NightwatchBuilderOption } from './nightwatch-builder-options';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 import * as path from 'path';
 import * as childProcess from 'child_process';
 
@@ -17,34 +9,52 @@ async function runNightwatch(
   options: NightwatchBuilderOption,
   context: BuilderContext
 ): Promise<any> {
-  options.environment = options.environment || 'default';
+  const NightwatchCommandLineOptions: string[] = [
+    'env',
+    'config',
+    'test',
+    'testcase',
+    'group',
+    'skipgroup',
+    'filter',
+    'tag',
+    'skiptags',
+    'retries',
+    'suiteRetries',
+    'timeout',
+    'reporter',
+    'output',
+    'headless',
+    'verbose',
+  ];
 
   const NightWatchTestPath = `${context.workspaceRoot}/nightwatch`;
-  const NightWatchConfigPath = `${context.workspaceRoot}/nightwatch.conf.js`;
   const NightwatchLauncher = path.join(process.cwd(), 'node_modules', '.bin', 'nightwatch');
-  const compileCommand = `cd ${NightWatchTestPath}; tsc -p tsconfig.e2e.json;`;
-  const nightwatchRunCommand = `${NightwatchLauncher} -e chrome -c ${NightWatchConfigPath};`;
+  const compileCommand = `cd ${NightWatchTestPath}; tsc -p ${options.tsConfig};`;
+
+  const nightwatchRunCommand = `${NightwatchLauncher} ${createNightwatchCommand(
+    options,
+    NightwatchCommandLineOptions
+  )}`;
 
   runCommand(compileCommand, context);
   return runCommand(nightwatchRunCommand, context);
 }
 
-export function startDevServer(
-  devServerTarget: string,
-  watch: boolean,
-  context: BuilderContext
-): Observable<string> {
-  const overrides = {
-    watch,
-  };
-  return scheduleTargetAndForget(context, targetFromTargetString(devServerTarget), overrides).pipe(
-    map((output: any) => {
-      if (!output.success && !watch) {
-        throw new Error('Could not compile application files');
+function createNightwatchCommand(options: any, nightwatchCommandLIneOptions: string[]): string {
+  let command = '';
+  nightwatchCommandLIneOptions.forEach((nightwatchOption, index) => {
+    if (options[nightwatchOption] !== undefined) {
+      if (typeof options[nightwatchOption] === 'boolean') {
+        if (options[nightwatchOption] === true) {
+          command += `${index === 0 ? '' : ' '}--${nightwatchOption}`;
+        }
+      } else {
+        command += `${index === 0 ? '' : ' '}--${nightwatchOption} "${options[nightwatchOption]}"`;
       }
-      return output.baseUrl as string;
-    })
-  );
+    }
+  });
+  return command;
 }
 
 function runCommand(command: string, context: BuilderContext): Promise<BuilderOutput> {

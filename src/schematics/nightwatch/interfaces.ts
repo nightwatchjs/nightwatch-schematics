@@ -2,6 +2,7 @@ import { NodeDependencyType } from './enums';
 
 export interface SchematicsOptions {
   removeProtractor: string;
+  environment: string;
   noBuilder: string;
   __version__: number;
 }

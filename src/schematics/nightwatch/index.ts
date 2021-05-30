@@ -38,7 +38,7 @@ export default function (_options: SchematicsOptions): Rule {
   };
 }
 
-function modifyAngularJson(options: any): Rule {
+function modifyAngularJson(options: SchematicsOptions): Rule {
   return (tree: Tree, context: SchematicContext) => {
     if (tree.exists('./angular.json')) {
       const angularJsonVal = getAngularJsonValue(tree);
@@ -52,6 +52,9 @@ function modifyAngularJson(options: any): Rule {
           builder: 'nightwatchjs-schematics:nightwatch',
           options: {
             devServerTarget: `${project}:serve`,
+            tsConfig: '../nightwatch/tsconfig.e2e.json',
+            config: './nightwatch.conf.js',
+            env: options.environment,
           },
           configurations: {
             production: {
@@ -73,7 +76,7 @@ function modifyAngularJson(options: any): Rule {
   };
 }
 
-function updateDependencies(options: any): Rule {
+function updateDependencies(options: SchematicsOptions): Rule {
   let removeDependencies: Observable<Tree>;
   return (tree: Tree, context: SchematicContext): Observable<Tree> => {
     context.logger.debug('Updating dependencies...');
@@ -94,7 +97,24 @@ function updateDependencies(options: any): Rule {
       );
     }
 
-    const addDependencies = of('nightwatch', 'chromedriver').pipe(
+    let driver: string;
+
+    switch (options.environment) {
+      case 'chrome':
+        driver = 'chromedriver';
+        break;
+      case 'firefox':
+        driver = 'geckodriver';
+        break;
+      case 'selenium':
+        driver = 'selenium-server';
+        break;
+      default:
+        driver = 'firefox';
+        break;
+    }
+
+    const addDependencies = of('nightwatch', driver).pipe(
       concatMap((packageName: string) => getLatestNodeVersion(packageName)),
       map((packageFromRegistry: NodePackage) => {
         const { name, version } = packageFromRegistry;
