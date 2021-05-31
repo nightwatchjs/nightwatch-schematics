@@ -27,6 +27,8 @@ jobs:
         run: npm install -g typescript
       - name: Install Angular CLI globally
         run: npm install -g @angular/cli
+      - name: Install Schematics CLI
+        run: npm install -g @angular-devkit/schematics-cli
       - name: npm install, build, test
         run: |
           npm ci
