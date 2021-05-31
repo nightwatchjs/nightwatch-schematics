@@ -243,7 +243,7 @@ export const addNightwatchTsConfig = (tree: Tree, angularJsonVal: any, projectNa
     if (!Array.isArray(tsConfig)) {
       project.architect.lint.options.tsConfig = tsConfig = [tsConfig];
     }
-    tsConfig.push(`${prefix}nightwatchjs/tsconfig.json`);
+    tsConfig.push(`${prefix}nightwatch/tsconfig.e2e.json`);
   }
   return tree.overwrite('./angular.json', JSON.stringify(angularJsonVal, null, 2));
 };

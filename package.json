@@ -7,15 +7,18 @@
     "build:test": "tsc -p tsconfig.spec.json",
     "build:watch": "tsc -p tsconfig.json -w",
     "build:test:watch": "tsc -p tsconfig.spec.json -w",
-    "test:unit": "jasmine src/**/*_spec.js",
-    "test": "npm run build && jasmine src/**/*_spec.js",
+    "build:clean:launch": "npm run build && npm run clean:launch",
+    "clean:launch": "npm run clean && npm run launch",
     "clean": "git checkout HEAD -- sandbox && git clean -f -d sandbox",
-    "execute": "npm run build && schematics .:ng-add",
-    "execute:prod": "npm run build && schematics .:ng-add --dry-run=false",
+    "launch": "npm run link:sandbox && cd sandbox && ng add $npm_package_name && npm link ../ && ng run sandbox:nightwatch-run",
     "link:sandbox": "npm link && cd sandbox && npm link $npm_package_name",
     "unlink:sandbox": "cd sandbox && npm unlink $npm_package_name && cd .. && npm unlink",
-    "dev": "npm run build && npm run link:sandbox && cd sandbox && ng add nightwatch-schematics",
-    "dev:build": "cd sandbox && npm link ../ && ng run sandbox:nightwatch-run"
+    "execute": "npm run build && schematics .:ng-add",
+    "execute:prod": "npm run build && schematics .:ng-add --dry-run=false",
+    "dev:build": "cd sandbox && npm link ../ && ng run sandbox:nightwatch-run",
+    "test": "npm run build:clean:launch && npm run test:sandbox && npm run clean",
+    "test:sandbox": "cd sandbox && npm run lint && npm run test && npm run build && npm run e2e",
+    "test:unit": "jasmine src/**/*_spec.js"
   },
   "keywords": [
     "schematics",
@@ -29,8 +32,8 @@
   "author": "Vaibhav Singh <singh.vaibhav2011@gmail.com>",
   "contributors": [],
   "license": "MIT",
-  "builders": "./src/builders/builders.json",
   "bugs": "https://github.com/nightwatch/nightwatch-schematics/issues",
+  "builders": "./src/builders/builders.json",
   "schematics": "./src/schematics/collection.json",
   "ng-add": {
     "save": "devDependencies"
