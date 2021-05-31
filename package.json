@@ -1,7 +1,7 @@
 {
-  "name": "nightwatchjs-schematics",
+  "name": "nightwatch-schematics",
   "version": "0.0.1",
-  "description": "Adds Nightwatchjs to an existing Angular CLI project",
+  "description": "Adds Nightwatch to an existing Angular CLI project",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "build:test": "tsc -p tsconfig.spec.json",
@@ -14,7 +14,7 @@
     "execute:prod": "npm run build && schematics .:ng-add --dry-run=false",
     "link:sandbox": "npm link && cd sandbox && npm link $npm_package_name",
     "unlink:sandbox": "cd sandbox && npm unlink $npm_package_name && cd .. && npm unlink",
-    "dev": "npm run build && npm run link:sandbox && cd sandbox && ng add nightwatchjs-schematics",
+    "dev": "npm run build && npm run link:sandbox && cd sandbox && ng add nightwatch-schematics",
     "dev:build": "cd sandbox && npm link ../ && ng run sandbox:nightwatch-run"
   },
   "keywords": [
@@ -23,14 +23,14 @@
     "nightwatch",
     "e2e",
     "testing",
-    "nightwatchjs-schematic",
+    "nightwatch-schematic",
     "angular"
   ],
   "author": "Vaibhav Singh <singh.vaibhav2011@gmail.com>",
   "contributors": [],
   "license": "MIT",
   "builders": "./src/builders/builders.json",
-  "bugs": "https://github.com/nightwatch/nightwatchjs-schematics/issues",
+  "bugs": "https://github.com/nightwatch/nightwatch-schematics/issues",
   "schematics": "./src/schematics/collection.json",
   "ng-add": {
     "save": "devDependencies"

@@ -1,11 +1,11 @@
-# Nightwatchjs Angular Schematics
+# Nightwatch Angular Schematics
 
 Add [Nightwatchjs](https://nightwatchjs.org/) to an Angular CLI Project.
 
 This Schematic will:
 
-- install Nightwatchjs,  it's dependencies and config files
-- add necessary files for Nightwatchjs to work with Angular & Typescript
+- install Nightwatch,  it's dependencies and config files
+- add necessary files for Nightwatch to work with Angular & Typescript
 - prompt for removal of Protractor files and configuration
 
 

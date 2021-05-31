@@ -5,7 +5,7 @@ import * as path from 'path';
 const NUMBER_OF_SCAFFOLDED_FILES = 27;
 const collectionPath = path.join(__dirname, '../collection.json');
 
-describe('nightwatchjs-schematics', async () => {
+describe('nightwatch-schematics', async () => {
   async function getWorkspaceTree(appName = 'sandbox') {
     const ngRunner = new SchematicTestRunner('@schematics/angular', '');
 
@@ -59,7 +59,7 @@ describe('nightwatchjs-schematics', async () => {
       .then((tree) => {
         expect(tree.readContent('/angular.json')).toContain(
           `"nightwatch-run": {
-          "builder": "nightwatchjs-schematics:nightwatch",
+          "builder": "nightwatch-schematics:nightwatch",
           "options": {
             "devServerTarget": "sandbox:serve",
             "tsConfig": "../nightwatch/tsconfig.e2e.json",
