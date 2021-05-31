@@ -42,22 +42,23 @@ describe('nightwatchjs-schematics', async () => {
   });
 
   it('should add nightwatch config, and tests in workspace', async () => {
-    const tree = await runner
+    runner
       .runSchematicAsync('ng-add', { environment: 'chrome' }, await getWorkspaceTree())
-      .toPromise();
-
-    expect(tree.files).toContain('/nightwatch/tsconfig.e2e.json');
-    expect(tree.files).toContain('/nightwatch/src/app_spec.ts');
-    expect(tree.files).toContain('/nightwatch.conf.js');
+      .toPromise()
+      .then((tree) => {
+        expect(tree.exists('/nightwatch/tsconfig.e2e.json')).toEqual(true);
+        expect(tree.exists('/nightwatch/src/app_spec.ts')).toEqual(true);
+        expect(tree.exists('/nightwatch.conf.js')).toEqual(true);
+      });
   });
 
   it('should overwrite angular.json to include `nightwatch-run`', async () => {
-    const tree = await runner
+    runner
       .runSchematicAsync('ng-add', { environment: 'chrome' }, await getWorkspaceTree())
-      .toPromise();
-
-    expect(tree.readContent('/angular.json')).toContain(
-      `"nightwatch-run": {
+      .toPromise()
+      .then((tree) => {
+        expect(tree.readContent('/angular.json')).toContain(
+          `"nightwatch-run": {
           "builder": "nightwatchjs-schematics:nightwatch",
           "options": {
             "devServerTarget": "sandbox:serve",
@@ -71,14 +72,16 @@ describe('nightwatchjs-schematics', async () => {
             }
           }
         }`
-    );
+        );
+      });
   });
 
   it('should add nightwatch in angular', async () => {
-    const tree = await runner
+    runner
       .runSchematicAsync('ng-add', { environment: 'chrome' }, await getWorkspaceTree())
-      .toPromise();
-
-    expect(tree.files.length).toEqual(NUMBER_OF_SCAFFOLDED_FILES);
+      .toPromise()
+      .then((tree) => {
+        expect(tree.files.length).toEqual(NUMBER_OF_SCAFFOLDED_FILES);
+      });
   });
 });
