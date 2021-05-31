@@ -9,7 +9,7 @@ This Schematic will:
 - prompt for removal of Protractor files and configuration
 
 ## ✨ Demo
-![Nightwatch Schematics Demo](https://raw.githubusercontent.com/vaibhavsingh97/nightwatch-schematics/main/assets/nightwatch-schematics.gif)
+![Nightwatch Schematics Demo](https://raw.githubusercontent.com/vaibhavsingh97/nightwatch-schematics/main/.github/assets/nightwatch-schematics.gif)
 ## Usage 🚀
 
 > ⚠️ **It's not released on NPM yet**
