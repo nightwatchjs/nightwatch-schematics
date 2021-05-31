@@ -36,5 +36,7 @@
       "type": "boolean"
     }
   },
-  "required": []
+  "required": [
+    "environment"
+  ]
 }

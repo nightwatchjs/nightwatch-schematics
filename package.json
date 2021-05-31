@@ -4,6 +4,10 @@
   "description": "Adds Nightwatchjs to an existing Angular CLI project",
   "scripts": {
     "build": "tsc -p tsconfig.json",
+    "build:test": "tsc -p tsconfig.spec.json",
+    "build:watch": "tsc -p tsconfig.json -w",
+    "build:test:watch": "tsc -p tsconfig.spec.json -w",
+    "test:unit": "jasmine src/**/*_spec.js",
     "test": "npm run build && jasmine src/**/*_spec.js",
     "clean": "git checkout HEAD -- sandbox && git clean -f -d sandbox",
     "execute": "npm run build && schematics .:ng-add",
@@ -14,12 +18,23 @@
     "dev:build": "cd sandbox && npm link ../ && ng run sandbox:nightwatch-run"
   },
   "keywords": [
-    "schematics"
+    "schematics",
+    "builders",
+    "nightwatch",
+    "e2e",
+    "testing",
+    "nightwatchjs-schematic",
+    "angular"
   ],
-  "author": "",
+  "author": "Vaibhav Singh <singh.vaibhav2011@gmail.com>",
+  "contributors": [],
   "license": "MIT",
   "builders": "./src/builders/builders.json",
+  "bugs": "https://github.com/nightwatch/nightwatchjs-schematics/issues",
   "schematics": "./src/schematics/collection.json",
+  "ng-add": {
+    "save": "devDependencies"
+  },
   "dependencies": {
     "@angular-devkit/architect": "^0.1200.1",
     "@angular-devkit/core": "^12.0.1",
