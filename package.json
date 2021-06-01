@@ -32,6 +32,9 @@
   "author": "Vaibhav Singh <vaibhav.s@browserstack.com>",
   "contributors": [],
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": "https://github.com/nightwatch/nightwatch-schematics/issues",
   "builders": "./src/builders/builders.json",
   "schematics": "./src/schematics/collection.json",
