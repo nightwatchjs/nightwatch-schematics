@@ -1,5 +1,5 @@
 {
-  "name": "nightwatch-schematics",
+  "name": "@nightwatch/schematics",
   "version": "0.0.1",
   "description": "Adds Nightwatch to an existing Angular CLI project",
   "scripts": {
