@@ -29,7 +29,7 @@
     "nightwatch-schematic",
     "angular"
   ],
-  "author": "Vaibhav Singh <singh.vaibhav2011@gmail.com>",
+  "author": "Vaibhav Singh <vaibhav.s@browserstack.com>",
   "contributors": [],
   "license": "MIT",
   "bugs": "https://github.com/nightwatch/nightwatch-schematics/issues",
