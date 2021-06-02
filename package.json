@@ -1,6 +1,6 @@
 {
   "name": "@nightwatch/schematics",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Adds Nightwatch to an existing Angular CLI project",
   "scripts": {
     "build": "tsc -p tsconfig.json",
