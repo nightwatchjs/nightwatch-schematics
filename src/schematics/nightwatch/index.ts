@@ -49,7 +49,7 @@ function modifyAngularJson(options: SchematicsOptions): Rule {
 
       Object.keys(projects).forEach((project) => {
         const NightwatchRunJson = {
-          builder: 'nightwatch-schematics:nightwatch',
+          builder: '@nightwatch/schematics:nightwatch',
           options: {
             devServerTarget: `${project}:serve`,
             tsConfig: '../nightwatch/tsconfig.e2e.json',
