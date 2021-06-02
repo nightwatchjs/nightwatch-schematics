@@ -5,7 +5,7 @@
 
 
 <p align="center">
-  <img alt="Nightwatch.js Schematic Logo" src="https://raw.githubusercontent.com/nightwatchjs/nightwatch-schematics/main/.github/assets/nightwatch-logo_400x400.jpg" width=300 />
+  <img alt="Nightwatch.js Schematic Logo" src="https://raw.githubusercontent.com/nightwatchjs/nightwatch-schematics/main/.github/assets/nigthwatch-logo.svg" width=300 />
 </p>
 
 Add [Nightwatchjs](https://nightwatchjs.org/) to an Angular CLI Project.
