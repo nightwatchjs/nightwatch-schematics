@@ -1,9 +1,11 @@
 # Nightwatch Angular Schematics
 
 [![Node CI](https://github.com/nightwatchjs/nightwatch-schematics/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/nightwatchjs/nightwatch-schematics/actions/workflows/build.yml)
+![npm](https://img.shields.io/npm/v/@nightwatch/schematics)
 
-<p>
-  <img alt="Nightwatch.js Schematic Logo" src="/.github/assets/nightwatch-logo_400x400.jpg" width=300 />
+
+<p align="center">
+  <img alt="Nightwatch.js Schematic Logo" src="https://raw.githubusercontent.com/nightwatchjs/nightwatch-schematics/main/.github/assets/nightwatch-logo_400x400.jpg" width=300 />
 </p>
 
 Add [Nightwatchjs](https://nightwatchjs.org/) to an Angular CLI Project.
@@ -17,8 +19,6 @@ This Schematic will:
 ## Demo ✨
 ![Nightwatch Schematics Demo](https://raw.githubusercontent.com/nightwatchjs/nightwatch-schematics/main/.github/assets/nightwatch-schematics.gif)
 ## Usage 🚀
-
-> ⚠️ **It's not released on NPM yet**
 
 Run as one command in an Angular CLI app directory. Note this will add the schematic as a dependency to your project.
 
