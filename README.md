@@ -20,7 +20,7 @@ This Schematic will:
 Run as one command in an Angular CLI app directory. Note this will add the schematic as a dependency to your project.
 
 ```bash
-ng add @nightwatch/nightwatch-schematics
+ng add @nightwatch/schematics
 ```
 
 One can provide following options:
@@ -31,13 +31,13 @@ One can provide following options:
 <!-- ### Options: install globally
 
 ```bash
-npm install -g @nightwatch/nightwatch-schematics
+npm install -g @nightwatch/schematics
 ```
 
 Then in an Angular CLI project run
 
 ```bash
-ng g @nightwatch/nightwatch-schematics
+ng g @nightwatch/schematics
 ``` -->
 With the custom builder installed, you can run Nightwatch with the following commands:
 
