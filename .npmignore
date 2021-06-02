@@ -2,3 +2,5 @@
 *.ts
 !*.d.ts
 !src/**/files/**/*.ts
+sandbox
+sandbox-v12

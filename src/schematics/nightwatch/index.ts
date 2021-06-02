@@ -200,7 +200,7 @@ function deleteDirectory(tree: Tree, path: string): void {
   try {
     tree.delete(path);
   } catch (error) {
-    throw new SchematicsException(`Got Error while deleting ${path}: ${error}`);
+    console.error(error.message);
   }
 }
 
