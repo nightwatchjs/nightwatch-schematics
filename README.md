@@ -3,7 +3,7 @@
 [![Node CI](https://github.com/nightwatchjs/nightwatch-schematics/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/nightwatchjs/nightwatch-schematics/actions/workflows/build.yml)
 
 <p>
-  <img alt="Nightwatch.js Schematic Logo" src="/.github/assets/nightwatch-logo_400x400.jpg" width=400 />
+  <img alt="Nightwatch.js Schematic Logo" src="/.github/assets/nightwatch-logo_400x400.jpg" width=300 />
 </p>
 
 Add [Nightwatchjs](https://nightwatchjs.org/) to an Angular CLI Project.
