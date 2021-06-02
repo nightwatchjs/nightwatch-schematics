@@ -2,7 +2,7 @@
 
 [![Node CI](https://github.com/nightwatchjs/nightwatch-schematics/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/nightwatchjs/nightwatch-schematics/actions/workflows/build.yml)
 
-<p align="center">
+<p>
   <img alt="Nightwatch.js Schematic Logo" src="/.github/assets/nightwatch-logo_400x400.jpg" width=400 />
 </p>
 
