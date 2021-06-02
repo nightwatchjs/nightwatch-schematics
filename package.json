@@ -29,6 +29,9 @@
     "nightwatch-schematic",
     "angular"
   ],
+  "files": [
+    "src/**/files/**/*.ts"
+  ],
   "author": "Vaibhav Singh <vaibhav.s@browserstack.com>",
   "contributors": [],
   "license": "MIT",
