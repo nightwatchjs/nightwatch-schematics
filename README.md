@@ -1,18 +1,18 @@
 # Nightwatch Angular Schematics
 
 [![Node CI](https://github.com/nightwatchjs/nightwatch-schematics/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/nightwatchjs/nightwatch-schematics/actions/workflows/build.yml)
-![npm](https://img.shields.io/npm/v/@nightwatch/schematics)
+[![npm package](https://img.shields.io/npm/v/@nightwatch/schematics)](https://www.npmjs.com/package/@nightwatch/schematics)
 
 
 <p align="center">
-  <img alt="Nightwatch.js Schematic Logo" src="https://raw.githubusercontent.com/nightwatchjs/nightwatch-schematics/main/.github/assets/nigthwatch-logo.svg" width=300 />
+  <img alt="Nightwatch.js Schematic Logo" src=".github/assets/nightwatch-logo.svg" width=300 />
 </p>
 
 Add [Nightwatchjs](https://nightwatchjs.org/) to an Angular CLI Project.
 
 This Schematic will:
 
-- install Nightwatch,  it's dependencies and config files
+- install Nightwatch, it's dependencies and config files
 - add necessary files for Nightwatch to work with Angular & Typescript
 - prompt for removal of Protractor files and configuration
 
