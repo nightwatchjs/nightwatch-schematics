@@ -41,6 +41,10 @@
     "access": "public"
   },
   "bugs": "https://github.com/nightwatch/nightwatch-schematics/issues",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:nightwatchjs/nightwatch-schematics.git"
+  },
   "builders": "./src/builders/builders.json",
   "schematics": "./src/schematics/collection.json",
   "ng-add": {

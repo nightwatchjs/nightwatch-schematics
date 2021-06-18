@@ -110,11 +110,11 @@ function updateDependencies(options: SchematicsOptions): Rule {
         driver = 'selenium-server';
         break;
       default:
-        driver = 'firefox';
+        driver = 'geckodriver';
         break;
     }
 
-    const addDependencies = of('nightwatch', driver).pipe(
+    const addDependencies = of('nightwatch', '@types/node', '@types/nightwatch', driver).pipe(
       concatMap((packageName: string) => getLatestNodeVersion(packageName)),
       map((packageFromRegistry: NodePackage) => {
         const { name, version } = packageFromRegistry;
@@ -200,7 +200,9 @@ function deleteDirectory(tree: Tree, path: string): void {
   try {
     tree.delete(path);
   } catch (error) {
-    console.error(error.message);
+    if (/does not exist/.test(error)) {
+      console.warn("⚠️ Skipping deletion: e2e/ directory doesn't exist");
+    }
   }
 }
 
