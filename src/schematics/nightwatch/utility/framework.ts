@@ -25,7 +25,10 @@ export default function getFramework(host: Tree) {
         return REACT_TS;
       }
       return REACT;
-    } else if (content.dependencies['typescript'] && !content.dependencies['react']) {
+    } else if (
+      (content.dependencies['typescript'] || content.devDependencies['typescript']) &&
+      !content.dependencies['react']
+    ) {
       return TYPESCRIPT;
     } else {
       throw new SchematicsException('No supported frameworks found in your package.json!');

@@ -43,12 +43,25 @@ export default function (_options: SchematicsOptions): Rule {
 
 export function addNightwatchTestsScriptToPackageJson(options: SchematicsOptions) {
   return (tree: Tree, context: SchematicContext) => {
-    let scriptsToAdd: ScriptHash = {
-      'e2e:test': `./node_modules/.bin/nightwatch --env '${options.environment}' --config './nightwatch.conf.js'`,
-    };
+    let scriptsToAdd: ScriptHash = {};
 
-    if (getFramework(tree) === 'angular') {
-      scriptsToAdd['e2e'] = `ng e2e`;
+    switch (getFramework(tree)) {
+      case 'angular':
+        scriptsToAdd['e2e'] = `ng e2e`;
+        scriptsToAdd[
+          'e2e:test'
+        ] = `./node_modules/.bin/nightwatch --env '${options.environment}' --config './nightwatch.conf.js'`;
+        break;
+      case 'typescript':
+        scriptsToAdd[
+          'e2e:test'
+        ] = `./node_modules/.bin/tsc -p ./nightwatch/tsconfig.e2e.json && ./node_modules/.bin/nightwatch --env '${options.environment}' --config './nightwatch.conf.js'`;
+        break;
+      default:
+        scriptsToAdd[
+          'e2e:test'
+        ] = `./node_modules/.bin/nightwatch --env '${options.environment}' --config './nightwatch.conf.js'`;
+        break;
     }
 
     addPropertyToPackageJson(tree, context, 'scripts', scriptsToAdd);
@@ -219,7 +232,7 @@ function deleteDirectory(tree: Tree, path: string): void {
     tree.delete(path);
   } catch (error) {
     if (/does not exist/.test(error)) {
-      console.warn("⚠️ Skipping deletion: e2e/ directory doesn't exist");
+      console.warn("⚠️  Skipping deletion: e2e/ directory doesn't exist");
     }
   }
 }
