@@ -1,7 +1,7 @@
 import { JsonAstObject, JsonParseMode, parseJsonAst } from '@angular-devkit/core';
 import { SchematicContext, SchematicsException, Tree } from '@angular-devkit/schematics';
 import { get } from 'http';
-import { pkgJson } from '../enums';
+import { Config, pkgJson } from '../enums';
 import { DeleteNodeDependency, NodePackage } from '../interfaces';
 import { getPackageJsonDependency } from './dependencies';
 import {
@@ -21,11 +21,6 @@ export function getAngularVersion(tree: Tree): number {
       .find((x) => !!parseInt(x, 10));
 
   return version ? +version : 0;
-}
-
-export enum Config {
-  PackageJsonPath = 'package.json',
-  JsonIndentLevel = 4,
 }
 
 export function readPackageJson(tree: Tree): JsonAstObject {
