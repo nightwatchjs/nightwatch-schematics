@@ -23,3 +23,7 @@ export interface DeleteNodeDependency {
   type: NodeDependencyType;
   name: string;
 }
+
+export interface ScriptHash {
+  [command: string]: string;
+}

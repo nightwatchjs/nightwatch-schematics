@@ -14,14 +14,16 @@ import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { map, concatMap } from 'rxjs/operators';
 import { Observable, of, concat } from 'rxjs';
 import { NodeDependencyType } from './enums';
-import { NodePackage, SchematicsOptions } from './interfaces';
+import { NodePackage, SchematicsOptions, ScriptHash } from './interfaces';
 import {
+  addPropertyToPackageJson,
   getAngularVersion,
   getLatestNodeVersion,
   parseJsonAtPath,
   removePackageJsonDependency,
 } from './utility/util';
 import { addPackageJsonDependency } from './utility/dependencies';
+import getFramework from './utility/framework';
 
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
@@ -33,8 +35,24 @@ export default function (_options: SchematicsOptions): Rule {
       updateDependencies(_options),
       _options.removeProtractor ? removeFiles() : noop,
       addNightwatchConfigFile(),
+      addNightwatchTestsScriptToPackageJson(_options),
       !_options.noBuilder ? modifyAngularJson(_options) : noop(),
     ])(tree, _context);
+  };
+}
+
+export function addNightwatchTestsScriptToPackageJson(options: SchematicsOptions) {
+  return (tree: Tree, context: SchematicContext) => {
+    let scriptsToAdd: ScriptHash = {
+      'e2e:test': `./node_modules/.bin/nightwatch --env '${options.environment}' --config './nightwatch.conf.js'`,
+    };
+
+    if (getFramework(tree) === 'angular') {
+      scriptsToAdd['e2e'] = `ng e2e`;
+    }
+
+    addPropertyToPackageJson(tree, context, 'scripts', scriptsToAdd);
+    return tree;
   };
 }
 
