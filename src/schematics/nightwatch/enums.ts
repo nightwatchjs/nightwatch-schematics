@@ -8,3 +8,8 @@ export enum NodeDependencyType {
 export enum pkgJson {
   Path = '/package.json',
 }
+
+export enum Config {
+  PackageJsonPath = 'package.json',
+  JsonIndentLevel = 4,
+}
