@@ -65,6 +65,10 @@ Vue Cli have plugin [@vue/cli-plugin-e2e-nightwatch][VueNightwatchPluginLink] wh
 
 ## Typescript
 
+### ✨ Demo
+
+![Nightwatch Schematics Demo](.github/assets/typescript-demo.gif)
+
 ### 🚀 Usage
 
 Install [Schematics CLI][SchematicsCliLink] globally
