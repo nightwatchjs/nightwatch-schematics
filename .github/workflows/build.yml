@@ -49,7 +49,7 @@ jobs:
         run : |
           npm install
           npm install @nightwatch/schematics
-          schematics @nightwatch/schematics:ng-add --removeProtractor --environment=chrome
+          schematics @nightwatch/schematics:ng-add --removeProtractor --environment=firefox
           npm run e2e:test
         env:
           CI: true
