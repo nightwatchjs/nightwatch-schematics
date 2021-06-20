@@ -37,7 +37,13 @@ async function runNightwatch(
     NightwatchCommandLineOptions
   )}`;
 
-  runCommand(compileCommand, context);
+  const status = await runCommand(compileCommand, context);
+  if (status.success) {
+    console.log('✅ Nightwatch tests successfully compiled');
+  } else {
+    console.log('😞 Something went wrong');
+  }
+
   return runCommand(nightwatchRunCommand, context);
 }
 
@@ -59,7 +65,7 @@ function createNightwatchCommand(options: any, nightwatchCommandLIneOptions: str
 
 function runCommand(command: string, context: BuilderContext): Promise<BuilderOutput> {
   return new Promise<BuilderOutput>((resolve, reject) => {
-    context.reportStatus(`Running ${command} ...`);
+    console.log(`⚙️  Running ${command} ...`);
 
     try {
       const child = childProcess.spawnSync(`${command}`, [], { shell: true, encoding: 'utf-8' });
