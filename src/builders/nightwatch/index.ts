@@ -30,7 +30,8 @@ async function runNightwatch(
 
   const NightWatchTestPath = `${context.workspaceRoot}/nightwatch`;
   const NightwatchLauncher = path.join(process.cwd(), 'node_modules', '.bin', 'nightwatch');
-  const compileCommand = `cd ${NightWatchTestPath}; tsc -p ${options.tsConfig};`;
+  const TypeScriptCli = path.join(process.cwd(), 'node_modules', '.bin', 'tsc');
+  const compileCommand = `cd ${NightWatchTestPath}; ${TypeScriptCli} -p ${options.tsConfig};`;
 
   const nightwatchRunCommand = `${NightwatchLauncher} ${createNightwatchCommand(
     options,
@@ -65,7 +66,7 @@ function createNightwatchCommand(options: any, nightwatchCommandLIneOptions: str
 
 function runCommand(command: string, context: BuilderContext): Promise<BuilderOutput> {
   return new Promise<BuilderOutput>((resolve, reject) => {
-    console.log(`⚙️  Running ${command} ...`);
+    console.log(`⚙️  Running ${command}`);
 
     try {
       const child = childProcess.spawnSync(`${command}`, [], { shell: true, encoding: 'utf-8' });
@@ -73,6 +74,7 @@ function runCommand(command: string, context: BuilderContext): Promise<BuilderOu
       if (child.status === 0) {
         return resolve({ success: true });
       } else {
+        console.error(child.stderr);
         resolve({ success: false });
       }
     } catch (error) {
