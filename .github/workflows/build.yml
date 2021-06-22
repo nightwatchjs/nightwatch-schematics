@@ -50,6 +50,7 @@ jobs:
           npm install
           npm install @nightwatch/schematics
           schematics @nightwatch/schematics:ng-add --removeProtractor --environment=firefox
+          jq '.scripts."e2e:test" = "./node_modules/.bin/tsc -p ./nightwatch/tsconfig.e2e.json && ./node_modules/.bin/nightwatch --env firefox --config ./nightwatch.conf.js --headless"' package.json  > "$tmp" && mv "$tmp" input.json
           npm run e2e:test
         env:
           CI: true
