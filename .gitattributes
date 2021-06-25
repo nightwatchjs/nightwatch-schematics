@@ -1,4 +1,6 @@
 sandbox/* linguist-vendored
 sandbox-v12/* linguist-vendored
-*.ts linguist-vendored=false
-*.js linguist-vendored=false
+*.html linguist-vendored
+*.scss linguist-vendored
+*.ts linguist-language=TypeScript
+*.js linguist-language=Javascript
