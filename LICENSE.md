@@ -1,6 +1,6 @@
 The MIT License (MIT)
 
-Copyright (c) 2021 Vaibhav Singh <vaibhav.s@browserstack.com>
+Copyright (c) 2021, BrowserStack Limited. https://www.browserstack.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
