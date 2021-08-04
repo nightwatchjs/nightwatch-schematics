@@ -229,12 +229,12 @@ function removeFiles(): Rule {
 
 function deleteDirectory(tree: Tree, path: string): void {
   try {
-    tree.delete(path);
-  } catch (error) {
-    if (/does not exist/.test(error)) {
-      console.warn("⚠️  Skipping deletion: e2e/ directory doesn't exist");
+    if (tree.getDir(path).subfiles.length > 0 || tree.getDir(path).subdirs.length > 0) {
+      tree.rename('e2e', `protractor/${path}`);
+    } else {
+      console.warn(`⚠️  Skipping deletion: ${path} doesn't exist`);
     }
-  }
+  } catch (error) {}
 }
 
 export const removeE2ELinting = (tree: Tree, angularJsonVal: any, project: string) => {
