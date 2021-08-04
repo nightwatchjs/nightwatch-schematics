@@ -24,7 +24,6 @@ import {
 } from './utility/util';
 import { addPackageJsonDependency } from './utility/dependencies';
 import getFramework from './utility/framework';
-// import { renameSync } from 'fs';
 
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
