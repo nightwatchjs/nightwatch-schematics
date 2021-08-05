@@ -24,6 +24,9 @@ import {
 } from './utility/util';
 import { addPackageJsonDependency } from './utility/dependencies';
 import getFramework from './utility/framework';
+import { cyanBright, yellowBright } from 'chalk';
+
+let globalObject: any = {};
 
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
@@ -37,6 +40,7 @@ export default function (_options: SchematicsOptions): Rule {
       addNightwatchConfigFile(),
       addNightwatchTestsScriptToPackageJson(_options),
       !_options.noBuilder ? modifyAngularJson(_options) : noop(),
+      postInstallMessage(_options),
     ])(tree, _context);
   };
 }
@@ -66,6 +70,21 @@ export function addNightwatchTestsScriptToPackageJson(options: SchematicsOptions
 
     addPropertyToPackageJson(tree, context, 'scripts', scriptsToAdd);
     return tree;
+  };
+}
+
+function postInstallMessage(options: SchematicsOptions) {
+  return (_tree: Tree, context: SchematicContext) => {
+    let message = '\n';
+    if (options.removeProtractor && globalObject.delete_e2e) {
+      message += cyanBright(
+        `We had moved the 'e2e' folder to the new location i.e. 'protractor'.\n`
+      );
+    }
+    message += `${cyanBright(
+      `Sample Nightwatch tests can be found under the 'nightwatch' folder. \nTo get started with Nightwatch, please visit:`
+    )} ${yellowBright(`https://nightwatchjs.org/gettingstarted/configuration/\n`)}`;
+    context.logger.info(message);
   };
 }
 
@@ -230,6 +249,8 @@ function removeFiles(): Rule {
 function deleteDirectory(tree: Tree, path: string): void {
   try {
     if (tree.getDir(path).subfiles.length > 0 || tree.getDir(path).subdirs.length > 0) {
+      globalObject.delete_e2e = true;
+
       tree.rename('e2e', `protractor/${path}`);
     } else {
       console.warn(`⚠️  Skipping deletion: ${path} doesn't exist`);
