@@ -81,9 +81,10 @@ function postInstallMessage(options: SchematicsOptions) {
         `We had moved the 'e2e' folder to the new location i.e. 'protractor'.\n`
       );
     }
-    message += `${cyanBright(
-      `Sample Nightwatch tests can be found under the 'nightwatch' folder. \nTo get started with Nightwatch, please visit:`
-    )} ${yellowBright(`https://nightwatchjs.org/gettingstarted/configuration/\n`)}`;
+    message +=
+      cyanBright(
+        `Sample Nightwatch tests can be found under the 'nightwatch' folder. \nTo get started with Nightwatch, please visit: `
+      ) + yellowBright(`https://nightwatchjs.org/gettingstarted/configuration/\n`);
     context.logger.info(message);
   };
 }
