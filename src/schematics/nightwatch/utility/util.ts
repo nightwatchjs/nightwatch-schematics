@@ -1,6 +1,6 @@
 import { JsonAstObject, JsonParseMode, parseJsonAst } from '@angular-devkit/core';
 import { SchematicContext, SchematicsException, Tree } from '@angular-devkit/schematics';
-import { get } from 'http';
+import { get } from 'https';
 import { Config, pkgJson } from '../enums';
 import { DeleteNodeDependency, NodePackage } from '../interfaces';
 import { getPackageJsonDependency } from './dependencies';
@@ -146,7 +146,7 @@ export function getLatestNodeVersion(packageName: string): Promise<NodePackage> 
   const DEFAULT_VERSION = 'latest';
 
   return new Promise((resolve) => {
-    return get(`http://registry.npmjs.org/${packageName}`, (res) => {
+    return get(`https://registry.npmjs.org/${packageName}`, (res) => {
       let rawData = '';
       res.on('data', (chunk) => (rawData += chunk));
       res.on('end', () => {
@@ -154,7 +154,7 @@ export function getLatestNodeVersion(packageName: string): Promise<NodePackage> 
           const response = JSON.parse(rawData);
           const version = (response && response['dist-tags']) || {};
 
-          resolve(buildPackage(packageName, version.latest));
+          resolve(buildPackage(packageName, version.next));
         } catch (e) {
           resolve(buildPackage(packageName));
         }
