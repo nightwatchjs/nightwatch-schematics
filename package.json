@@ -61,6 +61,6 @@
     "@types/jasmine": "~3.5.0",
     "@types/node": "^12.11.1",
     "jasmine": "^3.5.0",
-    "nightwatch": "^1.4.0"
+    "nightwatch": "^2.0.0-beta.1"
   }
 }
