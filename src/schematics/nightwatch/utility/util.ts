@@ -154,7 +154,10 @@ export function getLatestNodeVersion(packageName: string): Promise<NodePackage> 
           const response = JSON.parse(rawData);
           const version = (response && response['dist-tags']) || {};
 
-          resolve(buildPackage(packageName, version.next));
+          if (packageName === 'nightwatch') {
+            resolve(buildPackage(packageName, version.next));
+          }
+          resolve(buildPackage(packageName, version.latest));
         } catch (e) {
           resolve(buildPackage(packageName));
         }
