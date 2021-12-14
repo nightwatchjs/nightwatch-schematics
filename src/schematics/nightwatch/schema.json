@@ -47,6 +47,7 @@
     }
   },
   "required": [
-    "environment"
+    "environment",
+    "cucumberRunner"
   ]
 }
