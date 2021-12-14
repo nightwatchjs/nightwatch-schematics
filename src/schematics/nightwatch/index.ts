@@ -9,6 +9,7 @@ import {
   SchematicsException,
   Tree,
   url,
+  applyTemplates,
 } from '@angular-devkit/schematics';
 import { NodePackageInstallTask } from '@angular-devkit/schematics/tasks';
 import { map, concatMap } from 'rxjs/operators';
@@ -24,6 +25,7 @@ import {
 } from './utility/util';
 import { addPackageJsonDependency } from './utility/dependencies';
 import getFramework from './utility/framework';
+import { normalize, strings } from '@angular-devkit/core';
 
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
@@ -34,7 +36,7 @@ export default function (_options: SchematicsOptions): Rule {
     return chain([
       updateDependencies(_options),
       _options.removeProtractor ? removeFiles() : noop,
-      addNightwatchConfigFile(),
+      addNightwatchConfigFile(_options),
       addNightwatchTestsScriptToPackageJson(_options),
       !_options.noBuilder ? modifyAngularJson(_options) : noop(),
     ])(tree, _context);
@@ -94,7 +96,7 @@ function modifyAngularJson(options: SchematicsOptions): Rule {
           },
         };
 
-        context.logger.debug(`Adding Nighjtwatch command in angular.json`);
+        context.logger.debug(`Adding Nightwatch command in angular.json`);
         const projectArchitectJson = angularJsonVal['projects'][project]['architect'];
         projectArchitectJson['nightwatch-run'] = NightwatchRunJson;
         if (options.removeProtractor) {
@@ -168,11 +170,43 @@ function updateDependencies(options: SchematicsOptions): Rule {
   };
 }
 
-function addNightwatchConfigFile(): Rule {
+function addNightwatchConfigFile(options: SchematicsOptions): Rule {
   return (tree: Tree, context: SchematicContext) => {
     context.logger.debug('adding Nightwatchjs config file to host dir');
 
-    return chain([mergeWith(apply(url('./files'), [move('./')]))])(tree, context);
+    const angularJsonValue = getAngularJsonValue(tree);
+
+    const { projects } = angularJsonValue;
+    let cucumberRunner = '';
+
+
+    return chain(
+      Object.keys(projects).map((name) => {
+        const project = projects[name];
+
+        if (options.cucumberRunner) {
+          cucumberRunner = `test_runner: {
+            type: 'cucumber',
+            options: {
+              feature_path: 'tests/*.feature',
+              auto_start_session: false
+            }
+          },`
+        }
+
+        return mergeWith(
+          apply(url('./files'), [
+            move(normalize(project.root)),
+            applyTemplates({
+              ...strings,
+              ...options,
+              root: project.root ? `${project.root}/` : project.root,
+              cucumberRunner,
+            }),
+          ]),
+        )
+      }),
+    )(tree, context)
   };
 }
 

@@ -4,6 +4,7 @@ export interface SchematicsOptions {
   removeProtractor: string;
   environment: string;
   noBuilder: string;
+  cucumberRunner: string;
   __version__: number;
 }
 
