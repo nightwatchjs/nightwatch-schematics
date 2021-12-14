@@ -23,7 +23,7 @@
         "index": 1
       },
       "default": false,
-      "x-prompt": "Would you like to use cucumber as a test runner?"
+      "x-prompt": "Would you like to use cucumber as a test runner? (default: false)"
     },
     "environment": {
       "description": "The browser you want to run your e2e tests",
