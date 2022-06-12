@@ -9,6 +9,7 @@ import {
   findPropertyInAstObject,
   insertPropertyInAstObjectInOrder,
 } from './json-utils';
+import { JSONFile } from './jsonFile';
 
 export function getAngularVersion(tree: Tree): number {
   const packageNode = getPackageJsonDependency(tree, '@angular/core');
@@ -82,27 +83,10 @@ export function addPropertyToPackageJson(
   tree.commitUpdate(recorder);
 }
 
-export function parseJsonAtPath(tree: Tree, path: string): JsonAstObject {
-  const buffer = tree.read(path);
-
-  if (buffer === null) {
-    throw new SchematicsException('Could not read package.json.');
-  }
-
-  const content = buffer.toString();
-
-  const json = parseJsonAst(content, JsonParseMode.CommentsAllowed);
-
-  if (json.kind != 'object') {
-    throw new SchematicsException('Invalid package.json. Was expecting an object');
-  }
-
-  return json;
-}
-
 // modified version from utility/dependencies
+// TODO: fix this function
 export function removePackageJsonDependency(tree: Tree, dependency: DeleteNodeDependency): void {
-  const packageJsonAst = parseJsonAtPath(tree, pkgJson.Path);
+  const packageJsonAst = new JSONFile(tree, pkgJson.Path);
   const depsNode = findPropertyInAstObject(packageJsonAst, dependency.type);
   const recorder = tree.beginUpdate(pkgJson.Path);
 

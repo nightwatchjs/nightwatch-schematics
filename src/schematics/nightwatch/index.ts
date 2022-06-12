@@ -20,12 +20,12 @@ import {
   addPropertyToPackageJson,
   getAngularVersion,
   getLatestNodeVersion,
-  parseJsonAtPath,
   removePackageJsonDependency,
 } from './utility/util';
 import { addPackageJsonDependency } from './utility/dependencies';
 import getFramework from './utility/framework';
 import { normalize, strings } from '@angular-devkit/core';
+import { JSONFile } from './utility/jsonFile';
 
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
@@ -179,7 +179,6 @@ function addNightwatchConfigFile(options: SchematicsOptions): Rule {
     const { projects } = angularJsonValue;
     let cucumberRunner = '';
 
-
     return chain(
       Object.keys(projects).map((name) => {
         const project = projects[name];
@@ -191,7 +190,7 @@ function addNightwatchConfigFile(options: SchematicsOptions): Rule {
               feature_path: 'tests/*.feature',
               auto_start_session: false
             }
-          },`
+          },`;
         }
 
         return mergeWith(
@@ -203,16 +202,16 @@ function addNightwatchConfigFile(options: SchematicsOptions): Rule {
               root: project.root ? `${project.root}/` : project.root,
               cucumberRunner,
             }),
-          ]),
-        )
-      }),
-    )(tree, context)
+          ])
+        );
+      })
+    )(tree, context);
   };
 }
 
 function getAngularJsonValue(tree: Tree) {
-  const angularJsonAst = parseJsonAtPath(tree, './angular.json');
-  return angularJsonAst.value as any;
+  const angularJson = new JSONFile(tree, './angular.json');
+  return angularJson.get([]) as any;
 }
 
 function removeFiles(): Rule {
