@@ -1,5 +1,4 @@
 import { Tree } from '@angular-devkit/schematics';
-import { parseJsonAtPath } from './util';
 import { NodeDependency } from '../interfaces';
 import {
   appendPropertyInAstObject,
@@ -7,9 +6,10 @@ import {
   insertPropertyInAstObjectInOrder,
 } from './json-utils';
 import { NodeDependencyType, pkgJson } from '../enums';
+import { JSONFile } from './jsonFile';
 
 export function getPackageJsonDependency(tree: Tree, name: string): NodeDependency | null {
-  const packageJson = parseJsonAtPath(tree, pkgJson.Path);
+  const packageJson = new JSONFile(tree, pkgJson.Path);
   let dep: NodeDependency | null = null;
   [
     NodeDependencyType.Default,
@@ -38,7 +38,7 @@ export function getPackageJsonDependency(tree: Tree, name: string): NodeDependen
 }
 
 export function addPackageJsonDependency(tree: Tree, dependency: NodeDependency): void {
-  const packageJsonAst = parseJsonAtPath(tree, pkgJson.Path);
+  const packageJsonAst = new JSONFile(tree, pkgJson.Path);
   const depsNode = findPropertyInAstObject(packageJsonAst, dependency.type);
   const recorder = tree.beginUpdate(pkgJson.Path);
 
