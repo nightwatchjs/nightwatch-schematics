@@ -1,12 +1,9 @@
 import { Tree } from '@angular-devkit/schematics';
 import { NodeDependency } from '../interfaces';
-import {
-  appendPropertyInAstObject,
-  findPropertyInAstObject,
-  insertPropertyInAstObjectInOrder,
-} from './json-utils';
 import { NodeDependencyType, pkgJson } from '../enums';
 import { JSONFile } from './jsonFile';
+import { findNodeAtLocation } from 'jsonc-parser';
+import {appendPropertyInAstObject, insertPropertyInAstObjectInOrder} from './json-utils';
 
 export function getPackageJsonDependency(tree: Tree, name: string): NodeDependency | null {
   const packageJson = new JSONFile(tree, pkgJson.Path);
@@ -20,10 +17,10 @@ export function getPackageJsonDependency(tree: Tree, name: string): NodeDependen
     if (dep !== null) {
       return;
     }
-    const depsNode = findPropertyInAstObject(packageJson, depType);
-    if (depsNode !== null && depsNode.kind === 'object') {
-      const depNode = findPropertyInAstObject(depsNode, name);
-      if (depNode !== null && depNode.kind === 'string') {
+    const depsNode = packageJson.get([depType]);
+    if (depsNode  && depsNode.type === 'object') {
+      const depNode = findNodeAtLocation(depsNode, [name])
+      if (depNode && depNode.type === 'string') {
         const version = depNode.value;
         dep = {
           type: depType,
@@ -39,34 +36,59 @@ export function getPackageJsonDependency(tree: Tree, name: string): NodeDependen
 
 export function addPackageJsonDependency(tree: Tree, dependency: NodeDependency): void {
   const packageJsonAst = new JSONFile(tree, pkgJson.Path);
-  const depsNode = findPropertyInAstObject(packageJsonAst, dependency.type);
+  const depsNode = packageJsonAst.get([dependency.type]);
+  const recorder = tree.beginUpdate(pkgJson.Path);
+
+  try {
+    if (!depsNode) {
+      // Haven't found the dependencies key, add it to the root of the package.json.
+      appendPropertyInAstObject(
+        recorder,
+        packageJsonAst.JsonAst,
+        dependency.type,
+        {
+          [dependency.name]: dependency.version,
+        },
+        4
+      );
+    } else if ( depsNode && depsNode.type  === 'object') {
+      // check if package already added
+      const depNode = findNodeAtLocation(depsNode, [dependency.name]);
+
+      if (!depNode) {
+        // Package not found, add it.
+        insertPropertyInAstObjectInOrder(recorder, depsNode, dependency.name, dependency.version, 4);
+      } else if (dependency.overwrite) {
+        // Package found, update version if overwrite.
+        // const { end, start } = depNode;
+        if(depNode.colonOffset === undefined) {
+          throw new Error('Invalid package.json. Was expecting an object');
+        } 
+        
+        recorder.remove(depNode.offset + depNode.colonOffset, depNode.offset + depNode.length );
+        recorder.insertRight(depNode.offset + depNode.colonOffset, JSON.stringify(dependency.version));
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
+
+  tree.commitUpdate(recorder);
+}
+
+export function removePackageJsonDependency(tree: Tree, dependency: NodeDependency): void {
+  const packageJsonAst = new JSONFile(tree, pkgJson.Path);
+  const depsNode = packageJsonAst.get([dependency.type]);
   const recorder = tree.beginUpdate(pkgJson.Path);
 
   if (!depsNode) {
-    // Haven't found the dependencies key, add it to the root of the package.json.
-    appendPropertyInAstObject(
-      recorder,
-      packageJsonAst,
-      dependency.type,
-      {
-        [dependency.name]: dependency.version,
-      },
-      4
-    );
-  } else if (depsNode.kind === 'object') {
-    // check if package already added
-    const depNode = findPropertyInAstObject(depsNode, dependency.name);
+    return;
+  } 
 
-    if (!depNode) {
-      // Package not found, add it.
-      insertPropertyInAstObjectInOrder(recorder, depsNode, dependency.name, dependency.version, 4);
-    } else if (dependency.overwrite) {
-      // Package found, update version if overwrite.
-      const { end, start } = depNode;
-      recorder.remove(start.offset, end.offset - start.offset);
-      recorder.insertRight(start.offset, JSON.stringify(dependency.version));
-    }
-  }
+  const depNode = findNodeAtLocation(depsNode, [dependency.name]);
+  
+  if (!depNode) return;
 
+  recorder.remove(depNode.offset, depNode.offset + depNode.length);
   tree.commitUpdate(recorder);
 }

@@ -30,7 +30,7 @@ export class JSONFile {
   }
 
   private _jsonAst: Node | undefined;
-  private get JsonAst(): Node | undefined {
+  public get JsonAst(): Node  {
     if (this._jsonAst) {
       return this._jsonAst;
     }
@@ -47,11 +47,15 @@ export class JSONFile {
         )} at location: ${offset}.`
       );
     }
-
+    
+    if (this._jsonAst === undefined) {
+      throw new Error(`Failed to parse "${this.path}" as JSON AST Object.`);
+    }
+    
     return this._jsonAst;
   }
 
-  get(jsonPath: JSONPath): unknown {
+  get(jsonPath: JSONPath): Node |undefined {
     const jsonAstNode = this.JsonAst;
 
     if (!jsonAstNode) {

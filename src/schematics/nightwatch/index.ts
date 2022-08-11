@@ -20,9 +20,8 @@ import {
   addPropertyToPackageJson,
   getAngularVersion,
   getLatestNodeVersion,
-  removePackageJsonDependency,
 } from './utility/util';
-import { addPackageJsonDependency } from './utility/dependencies';
+import { addPackageJsonDependency, removePackageJsonDependency } from './utility/dependencies';
 import getFramework from './utility/framework';
 import { normalize, strings } from '@angular-devkit/core';
 import { JSONFile } from './utility/jsonFile';
@@ -123,6 +122,7 @@ function updateDependencies(options: SchematicsOptions): Rule {
           removePackageJsonDependency(tree, {
             type: NodeDependencyType.Dev,
             name: packageName,
+            version: '',
           });
 
           return tree;
