@@ -5,7 +5,6 @@ import {
   ParseError,
   applyEdits,
   findNodeAtLocation,
-  getNodeValue,
   modify,
   parseTree,
   printParseErrorCode,
@@ -56,19 +55,11 @@ export class JSONFile {
   }
 
   get(jsonPath: JSONPath): Node |undefined {
-    const jsonAstNode = this.JsonAst;
-
-    if (!jsonAstNode) {
+    if (!this.JsonAst) {
       return undefined;
     }
 
-    if (jsonPath.length === 0) {
-      return getNodeValue(jsonAstNode);
-    }
-
-    const node = findNodeAtLocation(jsonAstNode, jsonPath);
-
-    return node === undefined ? undefined : getNodeValue(node);
+    return findNodeAtLocation(this.JsonAst, jsonPath);
   }
 
   modify(jsonPath: JSONPath, value: JsonValue | undefined): void {

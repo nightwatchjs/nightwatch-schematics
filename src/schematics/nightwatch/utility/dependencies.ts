@@ -81,14 +81,28 @@ export function removePackageJsonDependency(tree: Tree, dependency: NodeDependen
   const depsNode = packageJsonAst.get([dependency.type]);
   const recorder = tree.beginUpdate(pkgJson.Path);
 
-  if (!depsNode) {
+  if (!depsNode || !depsNode.children) {
     return;
   } 
 
-  const depNode = findNodeAtLocation(depsNode, [dependency.name]);
-  
+  const depNode = findNodeAtLocation(depsNode, [dependency.name])?.parent;
   if (!depNode) return;
+  
+  let start = depNode.offset, length = depNode.length;
+  
+  let pos = depsNode.children.indexOf(depNode);
+  // Previous property present
+  if (pos -1 > -1) {
+    const prevNode = depsNode.children[pos - 1];
+    start = prevNode.offset + prevNode.length + 1;
+    length = depNode.offset + depNode.length - start;
+  }
+  
+  // Next property present
+  if (pos < depsNode.children.length - 1) {
+    length ++; // remove comma
+  }
 
-  recorder.remove(depNode.offset, depNode.offset + depNode.length);
+  recorder.remove(start, length);
   tree.commitUpdate(recorder);
 }
