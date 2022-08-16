@@ -33,6 +33,10 @@ export default function (_options: SchematicsOptions): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     _options = { ..._options, __version__: getAngularVersion(tree) };
 
+    if(_options.__version__ === 0) {
+      throw new SchematicsException('Angular version not found');
+    }
+
     return chain([
       updateDependencies(_options),
       _options.removeProtractor ? removeFiles() : noop,
