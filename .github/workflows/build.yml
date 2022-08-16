@@ -34,21 +34,11 @@ jobs:
         run: |
           npm ci
           npm run build --if-present
-          cd sandbox-v12
-          npm install chromedriver@latest --save-dev
-          cd  ./node_modules/chromedriver
-          npm run install
-          cd ../../../
           npm run build:clean:launch:v12
       - name: npm install, build, test for v12 angular app
         run: |
           npm ci
           npm run build --if-present
-          cd sandbox-v14
-          npm install chromedriver@latest --save-dev
-          cd  ./node_modules/chromedriver
-          npm run install
-          cd ../../../
           npm run build:clean:launch:v14
         env:
           CI: true
