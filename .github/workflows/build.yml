@@ -40,15 +40,15 @@ jobs:
           npm run install
           cd ../../../
           npm run build:clean:launch:v12
-      - uses: actions/checkout@v2
-        with:
-          repository: stemmlerjs/simple-typescript-starter
-      - name: npm install, build, test for v12 typescript app
-        run : |
-          npm install
-          npm install @nightwatch/schematics
-          schematics @nightwatch/schematics:ng-add --remove-protractor --environment=firefox --no-cucumber-runner
-          jq '.scripts."e2e:test" = "./node_modules/.bin/tsc -p ./nightwatch/tsconfig.e2e.json && ./node_modules/.bin/nightwatch --env firefox --config ./nightwatch.conf.js --headless"' package.json  > "/tmp/temp.json" && mv "/tmp/temp.json" package.json
-          npm run e2e:test
+      # - uses: actions/checkout@v2
+      #   with:
+      #     repository: stemmlerjs/simple-typescript-starter
+      # - name: npm install, build, test for v12 typescript app
+      #   run : |
+      #     npm install
+      #     npm install @nightwatch/schematics
+      #     schematics @nightwatch/schematics:ng-add --remove-protractor --environment=firefox --no-cucumber-runner
+      #     jq '.scripts."e2e:test" = "./node_modules/.bin/tsc -p ./nightwatch/tsconfig.e2e.json && ./node_modules/.bin/nightwatch --env firefox --config ./nightwatch.conf.js --headless"' package.json  > "/tmp/temp.json" && mv "/tmp/temp.json" package.json
+      #     npm run e2e:test
         env:
           CI: true
