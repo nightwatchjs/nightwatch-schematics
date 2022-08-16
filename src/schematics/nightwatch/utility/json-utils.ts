@@ -24,7 +24,7 @@ export function appendPropertyInAstObject(
 
   if (node.parent) {
     recorder.insertLeft(
-      node.parent?.offset  + node.parent?.length - 1,
+      node.parent?.offset  + node.parent?.length,
       '  ' +
         `"${propertyName}": ${JSON.stringify(value, null, 2).replace(/\n/g, indentStr)}` +
         indentStr.slice(0, -2)

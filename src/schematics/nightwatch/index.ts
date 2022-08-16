@@ -25,6 +25,7 @@ import { addPackageJsonDependency, removePackageJsonDependency } from './utility
 import getFramework from './utility/framework';
 import { normalize, strings } from '@angular-devkit/core';
 import { JSONFile } from './utility/jsonFile';
+import { getNodeValue } from 'jsonc-parser';
 
 // You don't have to export the function as default. You can also have more than one rule factory
 // per file.
@@ -211,7 +212,7 @@ function addNightwatchConfigFile(options: SchematicsOptions): Rule {
 
 function getAngularJsonValue(tree: Tree) {
   const angularJson = new JSONFile(tree, './angular.json');
-  return angularJson.get([]) as any;
+  return getNodeValue(angularJson.JsonAst);
 }
 
 function removeFiles(): Rule {
