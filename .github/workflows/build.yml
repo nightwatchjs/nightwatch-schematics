@@ -49,7 +49,7 @@ jobs:
         run : |
           npm install
           npm install @nightwatch/schematics
-          schematics @nightwatch/schematics:ng-add --removeProtractor --environment=firefox --cucumberRunner=false
+          schematics @nightwatch/schematics:ng-add --remove-protractor --environment=firefox --no-cucumber-runner
           jq '.scripts."e2e:test" = "./node_modules/.bin/tsc -p ./nightwatch/tsconfig.e2e.json && ./node_modules/.bin/nightwatch --env firefox --config ./nightwatch.conf.js --headless"' package.json  > "/tmp/temp.json" && mv "/tmp/temp.json" package.json
           npm run e2e:test
         env:
