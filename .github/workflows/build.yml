@@ -36,11 +36,13 @@ jobs:
           npm run build --if-present
           npm cache clean --force
           npm run build:clean:launch:v12
-      - name: npm install, build, test for v12 angular app
-        run: |
-          npm ci
-          npm run build --if-present
-          npm cache clean --force
-          npm run build:clean:launch:v14
+          sleep 30s
+          npm run test:v12
+      # - name: npm install, build, test for v12 angular app
+      #   run: |
+      #     npm ci
+      #     npm run build --if-present
+      #     npm cache clean --force
+      #     npm run build:clean:launch:v14
         env:
           CI: true
