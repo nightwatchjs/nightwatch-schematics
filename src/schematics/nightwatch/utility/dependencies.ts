@@ -1,5 +1,5 @@
 import { Tree } from '@angular-devkit/schematics';
-import { NodeDependency } from '../interfaces';
+import { DeleteNodeDependency, NodeDependency } from '../interfaces';
 import { NodeDependencyType, pkgJson } from '../enums';
 import { JSONFile } from './jsonFile';
 import { findNodeAtLocation } from 'jsonc-parser';
@@ -76,7 +76,7 @@ export function addPackageJsonDependency(tree: Tree, dependency: NodeDependency)
   tree.commitUpdate(recorder);
 }
 
-export function removePackageJsonDependency(tree: Tree, dependency: NodeDependency): void {
+export function removePackageJsonDependency(tree: Tree, dependency: DeleteNodeDependency): void {
   const packageJsonAst = new JSONFile(tree, pkgJson.Path);
   const depsNode = packageJsonAst.get([dependency.type]);
   const recorder = tree.beginUpdate(pkgJson.Path);

@@ -34,7 +34,7 @@ export default function (_options: SchematicsOptions): Rule {
     _options = { ..._options, __version__: getAngularVersion(tree) };
 
     if(_options.__version__ === 0) {
-      throw new SchematicsException('Angular version not found');
+      throw new SchematicsException('Angular project not found');
     }
 
     return chain([
@@ -126,8 +126,7 @@ function updateDependencies(options: SchematicsOptions): Rule {
 
           removePackageJsonDependency(tree, {
             type: NodeDependencyType.Dev,
-            name: packageName,
-            version: '',
+            name: packageName
           });
 
           return tree;

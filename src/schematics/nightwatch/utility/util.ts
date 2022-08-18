@@ -29,7 +29,6 @@ export function addPropertyToPackageJson(
   propertyName: string,
   propertyValue: { [key: string]: any }
 ) {
-  // const packageJsonAst = readPackageJson(tree);
   const packageJsonAst = new JSONFile(tree, pkgJson.Path);
   const pkgNode = packageJsonAst.get([propertyName]);
   const recorder = tree.beginUpdate('package.json');
