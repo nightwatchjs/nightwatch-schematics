@@ -39,11 +39,14 @@ jobs:
           cd sandbox-v12/node_modules/chromedriver && node install.js
           cd ../../../
           npm run test:v12
-      # - name: npm install, build, test for v12 angular app
-      #   run: |
-      #     npm ci
-      #     npm run build --if-present
-      #     npm cache clean --force
-      #     npm run build:clean:launch:v14
+      - name: npm install, build, test for v14 angular app
+        run: |
+          npm ci
+          npm run build --if-present
+          npm cache clean --force
+          npm run build:clean:launch:v14
+          cd sandbox-v14/node_modules/chromedriver && node install.js
+          cd ../../../
+          npm run test:v14
         env:
           CI: true
