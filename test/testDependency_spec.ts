@@ -172,4 +172,73 @@ describe('test dependency manipulation functions', function() {
         const result2 = getPackageJsonDependency(tree, dependency.name);
         expect(result2).to.deep.equal(dependency);
     });
+
+    it('should be able to remove multiple dependencies', function() {
+        let host = new virtualFs.test.TestHost({
+            '/package.json': `{
+                "name": "sandbox-v10",
+                "version": "0.0.0",
+                "scripts": {
+                    "ng": "ng",
+                    "start": "ng serve",
+                    "build": "ng build",
+                    "test": "ng test",
+                    "lint": "ng lint",
+                    "e2e": "ng e2e"
+                },
+                "private": true,
+                "dependencies": {
+                    "@angular/animations": "~10.0.9",
+                    "@angular/common": "~10.0.9",
+                    "@angular/compiler": "~10.0.9",
+                    "@angular/core": "~10.0.9",
+                    "@angular/forms": "~10.0.9",
+                    "@angular/platform-browser": "~10.0.9",
+                    "@angular/platform-browser-dynamic": "~10.0.9",
+                    "@angular/router": "~10.0.9",
+                    "rxjs": "~6.5.5",
+                    "tslib": "^2.0.0",
+                    "zone.js": "~0.10.3"
+                },
+                "devDependencies": {
+                    "@angular-devkit/build-angular": "~0.1000.6",
+                    "@angular/cli": "~10.0.6",
+                    "@angular/compiler-cli": "~10.0.9"
+                }
+            }`,
+        });
+          
+
+        const dependency = {
+            type: NodeDependencyType.Default,
+            name: '@angular/core',
+            version: '~10.0.9'
+        };
+
+        const dependency1 = {
+            type: NodeDependencyType.Default,
+            name: '@angular/compiler',
+            version: '~10.0.9'
+        };
+
+        const dependency2 = {
+            type: NodeDependencyType.Default,
+            name: '@angular/animations',
+            version: '~10.0.9'
+        };
+
+        let tree = new UnitTestTree(new HostTree(host));
+        removePackageJsonDependency(tree, dependency);
+        const result = getPackageJsonDependency(tree, dependency.name);
+        expect(result).to.be.null;
+
+        removePackageJsonDependency(tree, dependency1);
+        const result1 = getPackageJsonDependency(tree, dependency1.name);
+        expect(result1).to.be.null;
+
+        removePackageJsonDependency(tree, dependency2);
+        const result2 = getPackageJsonDependency(tree, dependency2.name);
+        expect(result2).to.be.null;
+
+    });
 });
