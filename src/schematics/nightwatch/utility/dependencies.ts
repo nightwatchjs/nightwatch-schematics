@@ -3,7 +3,7 @@ import { DeleteNodeDependency, NodeDependency } from '../interfaces';
 import { NodeDependencyType, pkgJson } from '../enums';
 import { JSONFile } from './jsonFile';
 import { findNodeAtLocation } from 'jsonc-parser';
-import {appendPropertyInAstObject, insertPropertyInAstObjectInOrder} from './json-utils';
+import { insertPropertyInAstObjectInOrder } from './json-utils';
 
 export function getPackageJsonDependency(tree: Tree, name: string): NodeDependency | null {
   const packageJson = new JSONFile(tree, pkgJson.Path);
@@ -42,15 +42,8 @@ export function addPackageJsonDependency(tree: Tree, dependency: NodeDependency)
   try {
     if (!depsNode) {
       // Haven't found the dependencies key, add it to the root of the package.json.
-      appendPropertyInAstObject(
-        recorder,
-        packageJsonAst.JsonAst,
-        dependency.type,
-        {
-          [dependency.name]: dependency.version,
-        },
-        4
-      );
+      insertPropertyInAstObjectInOrder(recorder, packageJsonAst.JsonAst, dependency.type, {[dependency.name]: dependency.version}, 2);
+
     } else if ( depsNode && depsNode.type  === 'object') {
       // check if package already added
       const depNode = findNodeAtLocation(depsNode, [dependency.name]);

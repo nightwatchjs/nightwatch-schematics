@@ -5,6 +5,10 @@ src/**/*.d.ts
 !src/*/files/**/*
 !src/**/*/nightwatch.conf.js
 
+test/**/*.js
+test/**/*.js.map
+test/**/*.d.ts
+
 # IDEs
 .idea/
 jsconfig.json

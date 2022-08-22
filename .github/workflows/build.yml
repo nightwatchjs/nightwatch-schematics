@@ -30,6 +30,11 @@ jobs:
         run: npm install -g @angular/cli
       - name: Install Schematics CLI globally
         run: npm install -g @angular-devkit/schematics-cli
+      - name: run unit tests
+        run: |
+          npm ci
+          npm run build 
+          npm run test:unit  
       - name: npm install, build, test for v12 angular app
         run: |
           npm ci

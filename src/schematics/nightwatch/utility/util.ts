@@ -5,7 +5,6 @@ import { Config, pkgJson } from '../enums';
 import { NodePackage } from '../interfaces';
 import { getPackageJsonDependency } from './dependencies';
 import {
-  appendPropertyInAstObject,
   insertPropertyInAstObjectInOrder,
 } from './json-utils';
 import { JSONFile } from './jsonFile';
@@ -35,13 +34,8 @@ export function addPropertyToPackageJson(
 
   if (!pkgNode) {
     // outer node missing, add key/value
-    appendPropertyInAstObject(
-      recorder,
-      packageJsonAst.JsonAst,
-      propertyName,
-      propertyValue,
-      Config.JsonIndentLevel
-    );
+    insertPropertyInAstObjectInOrder(recorder,  packageJsonAst.JsonAst, propertyName, propertyValue, Config.JsonIndentLevel);
+
   } else if (pkgNode.type === 'object') {
     // property exists, update values
     for (let [key, value] of Object.entries(propertyValue)) {

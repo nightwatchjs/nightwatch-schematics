@@ -16,16 +16,15 @@ export function appendPropertyInAstObject(
 ) {
   const indentStr = _buildIndent(indent);
 
-  if (node.children && node.children.length > 0) {
+  if (node.parent?.children && node.parent.children.length > 0) {
     // Insert comma.
-    const last = node.children[node.children.length - 1];
-    recorder.insertRight(last.offset + last.length, ',');
+    recorder.insertLeft(node.offset + node.length, ',');
   }
 
   if (node.parent) {
-    recorder.insertLeft(
-      node.parent?.offset  + node.parent?.length,
-      '  ' +
+    recorder.insertRight(
+      node.offset  + node.length,
+      indentStr +
         `"${propertyName}": ${JSON.stringify(value, null, 2).replace(/\n/g, indentStr)}` +
         indentStr.slice(0, -2)
     );
@@ -43,12 +42,6 @@ export function insertPropertyInAstObjectInOrder(
 ) {
   if (node.children === undefined) {
     throw new Error(`Failed to insert JSON property ${propertyName}`)
-  }
-
-  if (node.children && node.children.length === 0) {
-    appendPropertyInAstObject(recorder, node, propertyName, value, indent);
-
-    return;
   }
 
   //Find insertion info.
@@ -73,7 +66,7 @@ export function insertPropertyInAstObjectInOrder(
   }
 
   if (isLastProp) {
-    appendPropertyInAstObject(recorder, node, propertyName, value, indent);
+    appendPropertyInAstObject(recorder, last, propertyName, value, indent);
 
     return;
   }
@@ -83,10 +76,10 @@ export function insertPropertyInAstObjectInOrder(
   const insertIndex =
     insertAfterProp === null ? node.offset + 1 : insertAfterProp.offset + insertAfterProp.length + 1;
 
+  const insertString =  `${indentStr}"${propertyName}": ${JSON.stringify(value, null, 2).replace(/\n/g, indentStr)}` +
+      (node.children && node.children.length > 0? ',' : '\n' );
   recorder.insertRight(
     insertIndex,
-    `${indentStr}` +
-      `"${propertyName}": ${JSON.stringify(value, null, 2).replace(/\n/g, indentStr)}` +
-      ','
+    insertString
   );
 }
