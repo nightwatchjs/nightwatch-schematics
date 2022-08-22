@@ -51,7 +51,7 @@ export function addPropertyToPackageJson(
         context.logger.debug(`overwriting ${key} with ${value}`);
 
 
-        recorder.remove(innerNode.offset, innerNode.offset + innerNode.length);
+        recorder.remove(innerNode.offset, innerNode.length);
         recorder.insertRight(innerNode.offset, JSON.stringify(value));
       }
     }

@@ -16,7 +16,7 @@ class MockLogger implements LoggerApi {
         console.log(message);
     }
     debug(_message: string, _metadata?: JsonObject | undefined): void {
-        throw new Error("Method not implemented.");
+      console.debug(_message);
     }
     info(_message: string, _metadata?: JsonObject | undefined): void {
         throw new Error("Method not implemented.");
@@ -42,11 +42,16 @@ class MockContext implements SchematicContext {
     addTask<T extends object>(_task: TaskConfigurationGenerator<T>, _dependencies?: TaskId[] | undefined): TaskId {
         throw new Error("Method not implemented.");
     }
-    
+
+    constructor(){
+      this.logger = new MockLogger();
+    }   
 }
+
+
 describe('test utility functions', function() {
 
-    it('should add entries to package.json', async function(){
+    it('should add entries to package.json', function(){
         let host = new virtualFs.test.TestHost({
             '/package.json': `
 {
@@ -79,4 +84,51 @@ describe('test utility functions', function() {
             expect(result2?.value).to.equal(`./node_modules/.bin/nightwatch --env 'firefox' --config './nightwatch.conf.js'`);
         }
     });
+
+    it('should add entries to existing properties', async function() {
+      let host = new virtualFs.test.TestHost({
+        '/package.json': `{
+          "name": "sandbox-v10",
+          "version": "0.0.0",
+          "scripts": {
+              "e2e:test": "npx nightwatch",
+              "ng": "ng",
+              "start": "ng serve",
+              "build": "ng build",
+              "test": "ng test",
+              "lint": "ng lint",
+              "e2e": "ng e2e"
+          },
+          "private": true,
+          "dependencies": {
+              "@angular/animations": "~10.0.9",
+              "@angular/common": "~10.0.9",
+              "@angular/compiler": "~10.0.9",
+              "@angular/core": "~10.0.9"
+          },
+          "devDependencies": {
+              "@angular-devkit/build-angular": "~0.1000.6",
+              "@angular/cli": "~10.0.6",
+              "@angular/compiler-cli": "~10.0.9"
+          }
+      }`,
+    });
+
+    let tree = new UnitTestTree(new HostTree(host));
+
+    const scriptsToAdd = {
+        'e2e:test': `./node_modules/.bin/nightwatch --env 'firefox' --config './nightwatch.conf.js'`
+    }
+
+    addPropertyToPackageJson(tree, new MockContext(), 'scripts', scriptsToAdd);
+
+    const packageJson = new JSONFile(tree, '/package.json');
+    const result = findNodeAtLocation(packageJson.JsonAst, ['scripts']);
+    expect(result).not.to.be.undefined;
+    
+    if (result != undefined) {
+        const result2 = findNodeAtLocation( result, ['e2e:test']);
+        expect(result2?.value).to.equal(`./node_modules/.bin/nightwatch --env 'firefox' --config './nightwatch.conf.js'`);
+    }
+  });
 });
