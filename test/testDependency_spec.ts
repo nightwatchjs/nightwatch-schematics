@@ -147,7 +147,7 @@ describe('test dependency manipulation functions', function() {
         let host = new virtualFs.test.TestHost({
             '/package.json': `
                 {
-                "name": "blah",
+                "name": "test",
                 "dependencies": {
                     "@angular/core": "^6.0.0",
                     "@angular-devkit-tests/update-base": "1.0.0"
