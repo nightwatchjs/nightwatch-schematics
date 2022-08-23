@@ -1,4 +1,3 @@
-// import { Tree } from '@angular-devkit/schematics';
 import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
 import { expect } from "chai";

@@ -52,7 +52,6 @@ export function addPackageJsonDependency(tree: Tree, dependency: NodeDependency)
       insertPropertyInAstObjectInOrder(recorder, depsNode, dependency.name, dependency.version, 4);
     } else if (dependency.overwrite) {
       // Package found, update version if overwrite.
-      // const { end, start } = depNode;
       if(depNode.colonOffset === undefined) {
         throw new Error('Invalid package.json. Was expecting an object');
       } 
