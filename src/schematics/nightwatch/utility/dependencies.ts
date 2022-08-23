@@ -19,7 +19,7 @@ export function getPackageJsonDependency(tree: Tree, name: string): NodeDependen
     }
     const depsNode = packageJson.get([depType]);
     if (depsNode?.type === 'object') {
-      const depNode = findNodeAtLocation(depsNode, [name])
+      const depNode = findNodeAtLocation(depsNode, [name]);
       if (depNode && depNode.type === 'string') {
         const version = depNode.value;
         dep = {
@@ -41,9 +41,14 @@ export function addPackageJsonDependency(tree: Tree, dependency: NodeDependency)
 
   if (!depsNode) {
     // Haven't found the dependencies key, add it to the root of the package.json.
-    insertPropertyInAstObjectInOrder(recorder, packageJsonAst.JsonAst, dependency.type, {[dependency.name]: dependency.version}, 2);
-
-  } else if ( depsNode && depsNode.type  === 'object') {
+    insertPropertyInAstObjectInOrder(
+      recorder,
+      packageJsonAst.JsonAst,
+      dependency.type,
+      { [dependency.name]: dependency.version },
+      2
+    );
+  } else if (depsNode && depsNode.type === 'object') {
     // check if package already added
     const depNode = findNodeAtLocation(depsNode, [dependency.name]);
 
@@ -52,12 +57,15 @@ export function addPackageJsonDependency(tree: Tree, dependency: NodeDependency)
       insertPropertyInAstObjectInOrder(recorder, depsNode, dependency.name, dependency.version, 4);
     } else if (dependency.overwrite) {
       // Package found, update version if overwrite.
-      if(depNode.colonOffset === undefined) {
+      if (depNode.colonOffset === undefined) {
         throw new Error('Invalid package.json. Was expecting an object');
-      } 
-      
-      recorder.remove(depNode.offset + depNode.colonOffset, depNode.offset + depNode.length );
-      recorder.insertRight(depNode.offset + depNode.colonOffset, JSON.stringify(dependency.version));
+      }
+
+      recorder.remove(depNode.offset + depNode.colonOffset, depNode.offset + depNode.length);
+      recorder.insertRight(
+        depNode.offset + depNode.colonOffset,
+        JSON.stringify(dependency.version)
+      );
     }
   }
 
@@ -71,24 +79,25 @@ export function removePackageJsonDependency(tree: Tree, dependency: DeleteNodeDe
 
   if (!depsNode || !depsNode.children) {
     return;
-  } 
+  }
 
   const depNode = findNodeAtLocation(depsNode, [dependency.name])?.parent;
   if (!depNode) return;
-  
-  let start = depNode.offset, length = depNode.length;
-  
+
+  let start = depNode.offset,
+    length = depNode.length;
+
   let pos = depsNode.children.indexOf(depNode);
   // Previous property present
-  if (pos -1 > -1) {
+  if (pos - 1 > -1) {
     const prevNode = depsNode.children[pos - 1];
     start = prevNode.offset + prevNode.length + 1;
     length = depNode.offset + depNode.length - start;
   }
-  
+
   // Next property present
   if (pos < depsNode.children.length - 1) {
-    length ++; // remove comma
+    length++; // remove comma
   }
 
   recorder.remove(start, length);

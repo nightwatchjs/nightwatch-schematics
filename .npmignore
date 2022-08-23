@@ -2,5 +2,8 @@
 *.ts
 !*.d.ts
 !src/**/files/**/*.ts
+test
 sandbox
+sandbox-v10
 sandbox-v12
+sandbox-v14

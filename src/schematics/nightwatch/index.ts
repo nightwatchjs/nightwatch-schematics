@@ -16,11 +16,7 @@ import { map, concatMap } from 'rxjs/operators';
 import { Observable, of, concat } from 'rxjs';
 import { NodeDependencyType } from './enums';
 import { NodePackage, SchematicsOptions, ScriptHash } from './interfaces';
-import {
-  addPropertyToPackageJson,
-  getAngularVersion,
-  getLatestNodeVersion,
-} from './utility/util';
+import { addPropertyToPackageJson, getAngularVersion, getLatestNodeVersion } from './utility/util';
 import { addPackageJsonDependency, removePackageJsonDependency } from './utility/dependencies';
 import getFramework from './utility/framework';
 import { normalize, strings } from '@angular-devkit/core';
@@ -33,7 +29,7 @@ export default function (_options: SchematicsOptions): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     _options = { ..._options, __version__: getAngularVersion(tree) };
 
-    if(_options.__version__ === 0) {
+    if (_options.__version__ === 0) {
       throw new SchematicsException('Angular project not found');
     }
 
@@ -126,7 +122,7 @@ function updateDependencies(options: SchematicsOptions): Rule {
 
           removePackageJsonDependency(tree, {
             type: NodeDependencyType.Dev,
-            name: packageName
+            name: packageName,
           });
 
           return tree;

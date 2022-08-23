@@ -3,11 +3,7 @@
     "outDir": "../out-tsc/nightwatch",
     "module": "commonjs",
     "target": "es5",
-    "types": [
-      "node"
-    ],
+    "types": ["node"]
   },
-  "include": [
-    "src/**/*"
-  ]
+  "include": ["src/**/*"]
 }

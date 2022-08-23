@@ -3,7 +3,7 @@
 [![Node CI](https://github.com/nightwatchjs/nightwatch-schematics/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/nightwatchjs/nightwatch-schematics/actions/workflows/build.yml)
 [![npm package](https://img.shields.io/npm/v/@nightwatch/schematics)](https://www.npmjs.com/package/@nightwatch/schematics)
 
-> Fast and easy installation of [Nightwatch][NightwatchLink] into your projects
+> Fast and easy installation of [Nightwatch][nightwatchlink] into your projects
 
 Framework & Language Supported: [Angular](#angular)
 
@@ -11,14 +11,14 @@ Framework & Language Supported: [Angular](#angular)
   <img alt="Nightwatch.js Schematic Logo" src=".github/assets/nightwatch-logo.svg" width=300 />
 </p>
 
-This project is a Schematics implementation that allows you to easily integrate [Nightwatch][NightwatchLink] into your Angular projects.
+This project is a Schematics implementation that allows you to easily integrate [Nightwatch][nightwatchlink] into your Angular projects.
 
 **This Schematic will:**
 
 🏗️ Install Nightwatch, and it's dependencies  
-⚙️  Add NPM scripts for running Nightwatch tests  
+⚙️ Add NPM scripts for running Nightwatch tests  
 📦 Scaffold base Nightwatch config and test files  
-❓ Prompt for removal of Protractor files and configuration  
+❓ Prompt for removal of Protractor files and configuration
 
 ## Angular
 
@@ -35,7 +35,7 @@ ng add @nightwatch/schematics
 ```
 
 One can provide following options:
-| Option    | Description                                                                                                                                                                                           |
+| Option | Description |
 |-----------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | noBuilder | This will skip the builder addition, leaving the angular.json file unmodified and requiring you to run Nightwatch from the command line or through your IDE. Include --noBuilder in your ng add command. |
 
@@ -51,8 +51,7 @@ ng run {your-project-name}:nightwatch-run
 
 These two commands do the same thing. They will run nightwatch e2e tests.
 
-Once Nightwatch is added to your project, all [Nightwatch CLI options][NightwatchCliOptionsLink] will be available when triggering e2e tests. E.g.: `--verbose`, `--retries` etc.
-
+Once Nightwatch is added to your project, all [Nightwatch CLI options][nightwatchclioptionslink] will be available when triggering e2e tests. E.g.: `--verbose`, `--retries` etc.
 
 ### ✨ Demo
 
@@ -60,13 +59,13 @@ Once Nightwatch is added to your project, all [Nightwatch CLI options][Nightwatc
 
 ### 🚀 Usage
 
-Install [Schematics CLI][SchematicsCliLink] globally
+Install [Schematics CLI][schematicsclilink] globally
 
 ```bash
 npm install -g @angular-devkit/schematics-cli
 ```
 
-Install [Nightwatch-schematics][NightwatchSchematicsLink] in your project
+Install [Nightwatch-schematics][nightwatchschematicslink] in your project
 
 ```bash
 npm install @nightwatch/schematics
@@ -78,7 +77,7 @@ Run following command to install Nightwatch in your project:
 schematics @nightwatch/schematics:ng-add
 ```
 
-Once Nightwatch is added to your project, all [Nightwatch CLI options][NightwatchCliOptionsLink] will be available when triggering e2e tests. E.g.: `--verbose`, `--retries` etc. One can update `e2e:test` to include cli options.
+Once Nightwatch is added to your project, all [Nightwatch CLI options][nightwatchclioptionslink] will be available when triggering e2e tests. E.g.: `--verbose`, `--retries` etc. One can update `e2e:test` to include cli options.
 
 ## 🐛 Issues
 
@@ -98,9 +97,9 @@ npm update @nightwatch/schematics
 
 ### Where can I ask for help and report bugs?
 
-The best way to ask for help and to report bugs is to [open an issue][GithubIssueLink].
+The best way to ask for help and to report bugs is to [open an issue][githubissuelink].
 
-[Gitter][GitterLink] is another option.
+[Gitter][gitterlink] is another option.
 
 ### I created new angular project, how do I remove Protractor and install Nightwatch?
 
@@ -141,22 +140,19 @@ All you have to do is install the relevant drivers, and replace `env` value (Che
   }
 ```
 
-
-
 ### How to run e2e tests using npm?
 
 | Projects           | command          |
-|--------------------|------------------|
+| ------------------ | ---------------- |
 | Angular App        | npm run e2e      |
 | Typescript Project | npm run e2e:test |
-
 
 ## Drivers
 
 ### Drivers available to install
 
 | Name            | driver          | command                                  |
-|-----------------|-----------------|------------------------------------------|
+| --------------- | --------------- | ---------------------------------------- |
 | chrome          | chromedriver    | `npm install chromedriver --save-dev`    |
 | firefox         | geckodriver     | `npm install geckodriver --save-dev`     |
 | selenium-server | selenium-server | `npm install selenium-server --save-dev` |
@@ -214,11 +210,11 @@ npm run clean
 
 These projects: [@briebug/cypress-schematic](https://github.com/briebug/cypress-schematic/), [schuchard/prettier-schematic](https://github.com/schuchard/prettier-schematic) helped us in development of this project. Thank you!
 
-[NightwatchLink]:https://nightwatchjs.org/
-[NightwatchCliOptionsLink]:https://nightwatchjs.org/guide/running-tests/command-line-options.html
-[NightwatchGetStartedLink]:https://nightwatchjs.org/gettingstarted/
-[NightwatchSchematicsLink]:https://github.com/nightwatchjs/nightwatch-schematics
-[VueNightwatchPluginLink]:https://cli.vuejs.org/core-plugins/e2e-nightwatch.html
-[SchematicsCliLink]:https://www.npmjs.com/package/@angular-devkit/schematics-cli
-[GithubIssueLink]:https://github.com/nightwatchjs/nightwatch-schematics/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc
-[GitterLink]:https://gitter.im/nightwatchjs/nightwatch
+[nightwatchlink]: https://nightwatchjs.org/
+[nightwatchclioptionslink]: https://nightwatchjs.org/guide/running-tests/command-line-options.html
+[nightwatchgetstartedlink]: https://nightwatchjs.org/gettingstarted/
+[nightwatchschematicslink]: https://github.com/nightwatchjs/nightwatch-schematics
+[vuenightwatchpluginlink]: https://cli.vuejs.org/core-plugins/e2e-nightwatch.html
+[schematicsclilink]: https://www.npmjs.com/package/@angular-devkit/schematics-cli
+[githubissuelink]: https://github.com/nightwatchjs/nightwatch-schematics/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc
+[gitterlink]: https://gitter.im/nightwatchjs/nightwatch
