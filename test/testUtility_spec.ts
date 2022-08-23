@@ -55,7 +55,7 @@ describe('test utility functions', function() {
         let host = new virtualFs.test.TestHost({
             '/package.json': `
 {
-    "name": "blah",
+    "name": "test",
     "dependencies": {
         "@angular/common": "^6.0.0"
     },
