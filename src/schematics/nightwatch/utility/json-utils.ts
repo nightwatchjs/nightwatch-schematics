@@ -16,7 +16,7 @@ export function appendPropertyInAstObject(
 ) {
   const indentStr = _buildIndent(indent);
 
-  if (node?.parent?.children.length > 0) {
+  if (node.parent?.children && node.parent.children.length > 0) {
     // Insert comma.
     recorder.insertLeft(node.offset + node.length, ',');
   }

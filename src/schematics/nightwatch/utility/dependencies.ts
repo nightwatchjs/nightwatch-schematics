@@ -39,31 +39,27 @@ export function addPackageJsonDependency(tree: Tree, dependency: NodeDependency)
   const depsNode = packageJsonAst.get([dependency.type]);
   const recorder = tree.beginUpdate(pkgJson.Path);
 
-  try {
-    if (!depsNode) {
-      // Haven't found the dependencies key, add it to the root of the package.json.
-      insertPropertyInAstObjectInOrder(recorder, packageJsonAst.JsonAst, dependency.type, {[dependency.name]: dependency.version}, 2);
+  if (!depsNode) {
+    // Haven't found the dependencies key, add it to the root of the package.json.
+    insertPropertyInAstObjectInOrder(recorder, packageJsonAst.JsonAst, dependency.type, {[dependency.name]: dependency.version}, 2);
 
-    } else if ( depsNode && depsNode.type  === 'object') {
-      // check if package already added
-      const depNode = findNodeAtLocation(depsNode, [dependency.name]);
+  } else if ( depsNode && depsNode.type  === 'object') {
+    // check if package already added
+    const depNode = findNodeAtLocation(depsNode, [dependency.name]);
 
-      if (!depNode) {
-        // Package not found, add it.
-        insertPropertyInAstObjectInOrder(recorder, depsNode, dependency.name, dependency.version, 4);
-      } else if (dependency.overwrite) {
-        // Package found, update version if overwrite.
-        // const { end, start } = depNode;
-        if(depNode.colonOffset === undefined) {
-          throw new Error('Invalid package.json. Was expecting an object');
-        } 
-        
-        recorder.remove(depNode.offset + depNode.colonOffset, depNode.offset + depNode.length );
-        recorder.insertRight(depNode.offset + depNode.colonOffset, JSON.stringify(dependency.version));
-      }
+    if (!depNode) {
+      // Package not found, add it.
+      insertPropertyInAstObjectInOrder(recorder, depsNode, dependency.name, dependency.version, 4);
+    } else if (dependency.overwrite) {
+      // Package found, update version if overwrite.
+      // const { end, start } = depNode;
+      if(depNode.colonOffset === undefined) {
+        throw new Error('Invalid package.json. Was expecting an object');
+      } 
+      
+      recorder.remove(depNode.offset + depNode.colonOffset, depNode.offset + depNode.length );
+      recorder.insertRight(depNode.offset + depNode.colonOffset, JSON.stringify(dependency.version));
     }
-  } catch (e) {
-    console.log(e);
   }
 
   tree.commitUpdate(recorder);

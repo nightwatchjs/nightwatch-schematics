@@ -5,13 +5,13 @@
 
 > Fast and easy installation of [Nightwatch][NightwatchLink] into your projects
 
-Framework & Language Supported: [Angular](#angular) | [React](#react) | [Vue](#vue) | [Typescript](#typescript)
+Framework & Language Supported: [Angular](#angular)
 
 <p align="center">
   <img alt="Nightwatch.js Schematic Logo" src=".github/assets/nightwatch-logo.svg" width=300 />
 </p>
 
-This project is a Schematics implementation that allows you to easily integrate [Nightwatch][NightwatchLink] into your Angular, React, Vue, Typescript projects.
+This project is a Schematics implementation that allows you to easily integrate [Nightwatch][NightwatchLink] into your Angular projects.
 
 **This Schematic will:**
 
@@ -53,17 +53,6 @@ These two commands do the same thing. They will run nightwatch e2e tests.
 
 Once Nightwatch is added to your project, all [Nightwatch CLI options][NightwatchCliOptionsLink] will be available when triggering e2e tests. E.g.: `--verbose`, `--retries` etc.
 
-## React
-
-🚧 Currently, React is not fully supported, but we are working on it.
-
-One can still add Nightwatch to the React projects, please follow Nightwatch [get started][NightwatchGetStartedLink] guide.
-
-## Vue
-
-Vue Cli have plugin [@vue/cli-plugin-e2e-nightwatch][VueNightwatchPluginLink] which can be used to install Nightwatch in Vue projects.
-
-## Typescript
 
 ### ✨ Demo
 
@@ -153,15 +142,6 @@ All you have to do is install the relevant drivers, and replace `env` value (Che
 ```
 
 
-### How do I run on another browser that was initially selected in typescript project?
-
-In `package.json`, you will find `e2e:test` in the scripts, and change `env` value. To change the value, You can refer below [table](#drivers-available-to-install)
-
-```json
-{
-  "e2e:test": "./node_modules/.bin/tsc -p ./nightwatch/tsconfig.e2e.json && ./node_modules/.bin/nightwatch --env '<env-name>' --config './nightwatch.conf.js"
-}
-```
 
 ### How to run e2e tests using npm?
 

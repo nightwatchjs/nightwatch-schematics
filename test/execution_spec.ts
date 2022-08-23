@@ -1,11 +1,13 @@
+// import { Tree } from '@angular-devkit/schematics';
 import { Tree } from '@angular-devkit/schematics';
 import { SchematicTestRunner } from '@angular-devkit/schematics/testing';
+import { expect } from "chai";
 import * as path from 'path';
 
 const NUMBER_OF_SCAFFOLDED_FILES = 27;
-const collectionPath = path.join(__dirname, '../collection.json');
+const collectionPath = path.join(__dirname, '../src/schematics/collection.json');
 
-describe('@nightwatch/schematics', async () => {
+describe('@nightwatch/schematics', async function() {
   async function getWorkspaceTree(appName = 'sandbox') {
     const ngRunner = new SchematicTestRunner('@schematics/angular', '');
 
@@ -31,50 +33,50 @@ describe('@nightwatch/schematics', async () => {
 
   const runner: SchematicTestRunner = new SchematicTestRunner('schematics', collectionPath);
 
-  it('Should throw if environment argument is missing', async () => {
+  it('Should throw if environment argument is missing', async function() {
     let errorMessage: any;
     try {
       await runner.runSchematicAsync('ng-add', {}, Tree.empty()).toPromise();
     } catch (error) {
       errorMessage = error.message;
     }
-    expect(errorMessage).toMatch(/required property 'environment'/);
+    expect(errorMessage).to.match(/required property 'environment'/);
   });
 
-  it('should throw error if cucumberRunner argument is missing', async () => {
+  it('should throw error if cucumberRunner argument is missing', async function() {
     let errorMessage: any;
     try {
       await runner.runSchematicAsync('ng-add', {environment: 'chrome'}, await getWorkspaceTree()).toPromise();
     } catch (error) {
       errorMessage = error.message;
     }
-    expect(errorMessage).toMatch(/required property 'cucumberRunner'/);
+    expect(errorMessage).to.match(/required property 'cucumberRunner'/);
   })
 
   it('should add nightwatch config, and test cucumber as test runner is present in the nightwatch config', 
-  async () => {
+  async function() {
     runner.runSchematicAsync('ng-add', { environment: 'chrome', cucumberRunner: true }, await getWorkspaceTree()).toPromise().then((tree) => {
-      expect(tree.readContent('/projects/sandbox/nightwatch.conf.js')).toMatch(/[a-zA-Z]+: 'cucumber'/)
+      expect(tree.readContent('/projects/sandbox/nightwatch.conf.js')).to.match(/[a-zA-Z]+: 'cucumber'/)
     })
   })
 
-  it('should add nightwatch config, and tests in workspace', async () => {
+  it('should add nightwatch config, and tests in workspace', async function() {
     runner
       .runSchematicAsync('ng-add', { environment: 'chrome', cucumberRunner: false }, await getWorkspaceTree())
       .toPromise()
       .then((tree) => {
-        expect(tree.exists('/nightwatch/tsconfig.e2e.json')).toEqual(true);
-        expect(tree.exists('/nightwatch/src/app_spec.ts')).toEqual(true);
-        expect(tree.exists('/nightwatch.conf.js')).toEqual(true);
+        expect(tree.exists('/nightwatch/tsconfig.e2e.json')).to.be.true;
+        expect(tree.exists('/nightwatch/src/app_spec.ts')).to.be.true;
+        expect(tree.exists('/nightwatch.conf.js')).to.be.true;
       });
   });
 
-  it('should overwrite angular.json to include `nightwatch-run`', async () => {
+  it('should overwrite angular.json to include `nightwatch-run`', async function() {
     runner
       .runSchematicAsync('ng-add', { environment: 'chrome', cucumberRunner: false }, await getWorkspaceTree())
       .toPromise()
       .then((tree) => {
-        expect(tree.readContent('/angular.json')).toContain(
+        expect(tree.readContent('/angular.json')).to.contain(
           `"nightwatch-run": {
           "builder": "@nightwatch/schematics:nightwatch",
           "options": {
@@ -93,12 +95,12 @@ describe('@nightwatch/schematics', async () => {
       });
   });
 
-  it('should add nightwatch in angular', async () => {
+  it('should add nightwatch in angular', async function() {
     runner
-      .runSchematicAsync('ng-add', { environment: 'chrome', cucumberRunner: false }, await getWorkspaceTree())
+      .runSchematicAsync('ng-add', { environment: 'chrome', cucumberRunner: false },  await getWorkspaceTree())
       .toPromise()
       .then((tree) => {
-        expect(tree.files.length).toEqual(NUMBER_OF_SCAFFOLDED_FILES);
+        expect(tree.files.length).to.equal(NUMBER_OF_SCAFFOLDED_FILES);
       });
   });
 });
