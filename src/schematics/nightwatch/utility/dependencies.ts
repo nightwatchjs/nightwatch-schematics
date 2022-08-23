@@ -18,7 +18,7 @@ export function getPackageJsonDependency(tree: Tree, name: string): NodeDependen
       return;
     }
     const depsNode = packageJson.get([depType]);
-    if (depsNode  && depsNode.type === 'object') {
+    if (depsNode?.type === 'object') {
       const depNode = findNodeAtLocation(depsNode, [name])
       if (depNode && depNode.type === 'string') {
         const version = depNode.value;
