@@ -4,9 +4,7 @@ import { findNodeAtLocation } from 'jsonc-parser';
 import { Config, pkgJson } from '../enums';
 import { NodePackage } from '../interfaces';
 import { getPackageJsonDependency } from './dependencies';
-import {
-  insertPropertyInAstObjectInOrder,
-} from './json-utils';
+import { insertPropertyInAstObjectInOrder } from './json-utils';
 import { JSONFile } from './jsonFile';
 
 export function getAngularVersion(tree: Tree): number {
@@ -34,8 +32,13 @@ export function addPropertyToPackageJson(
 
   if (!pkgNode) {
     // outer node missing, add key/value
-    insertPropertyInAstObjectInOrder(recorder,  packageJsonAst.JsonAst, propertyName, propertyValue, Config.JsonIndentLevel);
-
+    insertPropertyInAstObjectInOrder(
+      recorder,
+      packageJsonAst.JsonAst,
+      propertyName,
+      propertyValue,
+      Config.JsonIndentLevel
+    );
   } else if (pkgNode.type === 'object') {
     // property exists, update values
     for (let [key, value] of Object.entries(propertyValue)) {
@@ -49,7 +52,6 @@ export function addPropertyToPackageJson(
       } else {
         // script found, overwrite value
         context.logger.debug(`overwriting ${key} with ${value}`);
-
 
         recorder.remove(innerNode.offset, innerNode.length);
         recorder.insertRight(innerNode.offset, JSON.stringify(value));

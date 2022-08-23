@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "tsconfig",
-    "lib": [
-      "es2018",
-      "dom"
-    ],
+    "lib": ["es2018", "dom"],
     "declaration": true,
     "module": "commonjs",
     "moduleResolution": "node",
@@ -20,18 +17,8 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "es6",
-    "types": [
-      "node",
-      "mocha",
-      "chai"
-    ]
+    "types": ["node", "mocha", "chai"]
   },
-  "include": [
-    "src/**/*",
-    "test/**/*"
-  ],
-  "exclude": [
-    "src/*/files/**/*",
-    "src/**/*_spec.ts",
-  ]
+  "include": ["src/**/*", "test/**/*"],
+  "exclude": ["src/*/files/**/*", "src/**/*_spec.ts"]
 }

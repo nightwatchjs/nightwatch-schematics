@@ -28,12 +28,7 @@
     "environment": {
       "description": "The browser you want to run your e2e tests",
       "type": "string",
-      "enum": [
-        "chrome",
-        "firefox",
-        "safari",
-        "selenium"
-      ],
+      "enum": ["chrome", "firefox", "safari", "selenium"],
       "$default": {
         "$source": "argv",
         "index": 2
@@ -46,8 +41,5 @@
       "type": "boolean"
     }
   },
-  "required": [
-    "environment",
-    "cucumberRunner"
-  ]
+  "required": ["environment", "cucumberRunner"]
 }
