@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [14.x, 16.14.2]
 
     steps:
       - uses: actions/checkout@v2
@@ -30,27 +30,37 @@ jobs:
         run: npm install -g @angular/cli
       - name: Install Schematics CLI globally
         run: npm install -g @angular-devkit/schematics-cli
-      - name: npm install, build, test
+      - name: run unit tests
+        run: |
+          npm ci
+          npm run build 
+          npm run test:unit  
+      - name: npm install, build, test for v10 angular app
         run: |
           npm ci
           npm run build --if-present
-          npm run build:test --if-present
-          npm run test:unit
-          npm run build:clean:launch
+          npm cache clean --force
+          npm run build:clean:launch:v10
+          cd sandbox-v10/node_modules/chromedriver && node install.js
+          cd ../../../
+          npm run test:v10
       - name: npm install, build, test for v12 angular app
         run: |
           npm ci
           npm run build --if-present
+          npm cache clean --force
           npm run build:clean:launch:v12
-      - uses: actions/checkout@v2
-        with:
-          repository: stemmlerjs/simple-typescript-starter
-      - name: npm install, build, test for v12 typescript app
-        run : |
-          npm install
-          npm install @nightwatch/schematics
-          schematics @nightwatch/schematics:ng-add --removeProtractor --environment=firefox --cucumberRunner=false
-          jq '.scripts."e2e:test" = "./node_modules/.bin/tsc -p ./nightwatch/tsconfig.e2e.json && ./node_modules/.bin/nightwatch --env firefox --config ./nightwatch.conf.js --headless"' package.json  > "/tmp/temp.json" && mv "/tmp/temp.json" package.json
-          npm run e2e:test
+          cd sandbox-v12/node_modules/chromedriver && node install.js
+          cd ../../../
+          npm run test:v12
+      - name: npm install, build, test for v14 angular app
+        run: |
+          npm ci
+          npm run build --if-present
+          npm cache clean --force
+          npm run build:clean:launch:v14
+          cd sandbox-v14/node_modules/chromedriver && node install.js
+          cd ../../../
+          npm run test:v14
         env:
           CI: true

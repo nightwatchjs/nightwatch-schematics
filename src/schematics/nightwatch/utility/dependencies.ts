@@ -1,15 +1,12 @@
 import { Tree } from '@angular-devkit/schematics';
-import { parseJsonAtPath } from './util';
-import { NodeDependency } from '../interfaces';
-import {
-  appendPropertyInAstObject,
-  findPropertyInAstObject,
-  insertPropertyInAstObjectInOrder,
-} from './json-utils';
+import { DeleteNodeDependency, NodeDependency } from '../interfaces';
 import { NodeDependencyType, pkgJson } from '../enums';
+import { JSONFile } from './jsonFile';
+import { findNodeAtLocation } from 'jsonc-parser';
+import { insertPropertyInAstObjectInOrder } from './json-utils';
 
 export function getPackageJsonDependency(tree: Tree, name: string): NodeDependency | null {
-  const packageJson = parseJsonAtPath(tree, pkgJson.Path);
+  const packageJson = new JSONFile(tree, pkgJson.Path);
   let dep: NodeDependency | null = null;
   [
     NodeDependencyType.Default,
@@ -20,10 +17,10 @@ export function getPackageJsonDependency(tree: Tree, name: string): NodeDependen
     if (dep !== null) {
       return;
     }
-    const depsNode = findPropertyInAstObject(packageJson, depType);
-    if (depsNode !== null && depsNode.kind === 'object') {
-      const depNode = findPropertyInAstObject(depsNode, name);
-      if (depNode !== null && depNode.kind === 'string') {
+    const depsNode = packageJson.get([depType]);
+    if (depsNode?.type === 'object') {
+      const depNode = findNodeAtLocation(depsNode, [name])
+      if (depNode && depNode.type === 'string') {
         const version = depNode.value;
         dep = {
           type: depType,
@@ -38,35 +35,62 @@ export function getPackageJsonDependency(tree: Tree, name: string): NodeDependen
 }
 
 export function addPackageJsonDependency(tree: Tree, dependency: NodeDependency): void {
-  const packageJsonAst = parseJsonAtPath(tree, pkgJson.Path);
-  const depsNode = findPropertyInAstObject(packageJsonAst, dependency.type);
+  const packageJsonAst = new JSONFile(tree, pkgJson.Path);
+  const depsNode = packageJsonAst.get([dependency.type]);
   const recorder = tree.beginUpdate(pkgJson.Path);
 
   if (!depsNode) {
     // Haven't found the dependencies key, add it to the root of the package.json.
-    appendPropertyInAstObject(
-      recorder,
-      packageJsonAst,
-      dependency.type,
-      {
-        [dependency.name]: dependency.version,
-      },
-      4
-    );
-  } else if (depsNode.kind === 'object') {
+    insertPropertyInAstObjectInOrder(recorder, packageJsonAst.JsonAst, dependency.type, {[dependency.name]: dependency.version}, 2);
+
+  } else if ( depsNode && depsNode.type  === 'object') {
     // check if package already added
-    const depNode = findPropertyInAstObject(depsNode, dependency.name);
+    const depNode = findNodeAtLocation(depsNode, [dependency.name]);
 
     if (!depNode) {
       // Package not found, add it.
       insertPropertyInAstObjectInOrder(recorder, depsNode, dependency.name, dependency.version, 4);
     } else if (dependency.overwrite) {
       // Package found, update version if overwrite.
-      const { end, start } = depNode;
-      recorder.remove(start.offset, end.offset - start.offset);
-      recorder.insertRight(start.offset, JSON.stringify(dependency.version));
+      if(depNode.colonOffset === undefined) {
+        throw new Error('Invalid package.json. Was expecting an object');
+      } 
+      
+      recorder.remove(depNode.offset + depNode.colonOffset, depNode.offset + depNode.length );
+      recorder.insertRight(depNode.offset + depNode.colonOffset, JSON.stringify(dependency.version));
     }
   }
 
+  tree.commitUpdate(recorder);
+}
+
+export function removePackageJsonDependency(tree: Tree, dependency: DeleteNodeDependency): void {
+  const packageJsonAst = new JSONFile(tree, pkgJson.Path);
+  const depsNode = packageJsonAst.get([dependency.type]);
+  const recorder = tree.beginUpdate(pkgJson.Path);
+
+  if (!depsNode || !depsNode.children) {
+    return;
+  } 
+
+  const depNode = findNodeAtLocation(depsNode, [dependency.name])?.parent;
+  if (!depNode) return;
+  
+  let start = depNode.offset, length = depNode.length;
+  
+  let pos = depsNode.children.indexOf(depNode);
+  // Previous property present
+  if (pos -1 > -1) {
+    const prevNode = depsNode.children[pos - 1];
+    start = prevNode.offset + prevNode.length + 1;
+    length = depNode.offset + depNode.length - start;
+  }
+  
+  // Next property present
+  if (pos < depsNode.children.length - 1) {
+    length ++; // remove comma
+  }
+
+  recorder.remove(start, length);
   tree.commitUpdate(recorder);
 }

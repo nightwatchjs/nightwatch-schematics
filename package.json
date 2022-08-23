@@ -7,23 +7,31 @@
     "build:test": "tsc -p tsconfig.spec.json",
     "build:watch": "tsc -p tsconfig.json -w",
     "build:test:watch": "tsc -p tsconfig.spec.json -w",
-    "build:clean:launch": "npm run build && npm run clean:launch",
+    "build:clean:launch:v10": "npm run build && npm run clean:launch:v10",
     "build:clean:launch:v12": "npm run build && npm run clean:launch:v12",
-    "clean:launch": "npm run clean && npm run launch",
+    "build:clean:launch:v14": "npm run build && npm run clean:launch:v14",
+    "clean:launch:v10": "npm run clean:v10 && npm run launch:v10",
     "clean:launch:v12": "npm run clean:v12 && npm run launch:v12",
-    "clean": "git checkout HEAD -- sandbox && git clean -f -d sandbox",
+    "clean:launch:v14": "npm run clean:v14 && npm run launch:v14",
+    "clean:v10": "git checkout HEAD -- sandbox-v10 && git clean -f -d sandbox-v10",
     "clean:v12": "git checkout HEAD -- sandbox-v12 && git clean -f -d sandbox-v12",
-    "launch": "npm run link:sandbox && cd sandbox && ng add $npm_package_name --remove-protractor --environment='chrome' --cucumberRunner=false && npm link ../ && ng run sandbox:nightwatch-run --headless",
-    "launch:v12": "npm run link:sandbox:v12 && cd sandbox-v12 && ng add $npm_package_name --remove-protractor --environment='chrome' --cucumberRunner=false && npm link ../ && ng run sandbox-v12:nightwatch-run --headless",
-    "link:sandbox": "npm link && cd sandbox && npm link $npm_package_name",
+    "clean:v14": "git checkout HEAD -- sandbox-v14 && git clean -f -d sandbox-v14",
+    "launch:v10": "npm run link:sandbox:v10 && cd sandbox-v10 && ng add $npm_package_name --remove-protractor --environment='chrome' --no-cucumber-runner && npm link ../",
+    "launch:v12": "npm run link:sandbox:v12 && cd sandbox-v12 && ng add $npm_package_name --remove-protractor --environment='chrome' --no-cucumber-runner && npm link ../",
+    "launch:v14": "npm run link:sandbox:v14 && cd sandbox-v14 && ng add $npm_package_name --remove-protractor --environment='chrome' --no-cucumber-runner && npm link ../",
+    "test:v10": "cd sandbox-v10 && ng run sandbox-v10:nightwatch-run --headless",
+    "test:v12": "cd sandbox-v12 && ng run sandbox-v12:nightwatch-run --headless",
+    "test:v14": "cd sandbox-v14 && ng run sandbox-v14:nightwatch-run --headless",
+    "link:sandbox:v10": "npm link && cd sandbox-v10 && npm link $npm_package_name",
     "link:sandbox:v12": "npm link && cd sandbox-v12 && npm link $npm_package_name",
+    "link:sandbox:v14": "npm link && cd sandbox-v14 && npm link $npm_package_name",
     "unlink:sandbox": "cd sandbox && npm unlink $npm_package_name && cd .. && npm unlink",
     "execute": "npm run build && schematics .:ng-add",
     "execute:prod": "npm run build && schematics .:ng-add --dry-run=false",
     "dev:build": "cd sandbox && npm link ../ && ng run sandbox:nightwatch-run",
-    "test": "npm run build:clean:launch && npm run test:sandbox && npm run clean",
-    "test:sandbox": "cd sandbox && npm run lint && npm run test && npm run build && npm run e2e",
-    "test:unit": "jasmine src/**/*_spec.js"
+    "test": "npm run build:clean:launch && npm run test:sandbox:v14 && npm run clean",
+    "test:sandbox:v14": "cd sandbox-14 && npm run lint && npm run test && npm run build && npm run e2e",
+    "test:unit": "mocha test/**/*_spec.js"
   },
   "keywords": [
     "schematics",
@@ -51,16 +59,19 @@
     "save": "devDependencies"
   },
   "dependencies": {
-    "@angular-devkit/architect": "^0.1200.1",
-    "@angular-devkit/core": "^12.0.1",
-    "@angular-devkit/schematics": "^12.0.1",
-    "@schematics/angular": "^12.0.1",
-    "typescript": "~4.1.2"
+    "@angular-devkit/architect": "^0.1401.3",
+    "@angular-devkit/core": "^14.1.3",
+    "@angular-devkit/schematics": "^14.1.3",
+    "@schematics/angular": "^14.1.3",
+    "jsonc-parser": "^3.1.0",
+    "typescript": "~4.7.4"
   },
   "devDependencies": {
-    "@types/jasmine": "~3.5.0",
-    "@types/node": "^12.11.1",
-    "jasmine": "^3.5.0",
-    "nightwatch": "^2.0.0-beta.1"
+    "@types/chai": "^4.3.3",
+    "@types/mocha": "^9.1.1",
+    "@types/node": "^18.7.6",
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0",
+    "nightwatch": "^2.3.0"
   }
 }

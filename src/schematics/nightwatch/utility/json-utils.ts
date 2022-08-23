@@ -1,19 +1,7 @@
-import { JsonAstKeyValue, JsonAstNode, JsonAstObject, JsonValue } from '@angular-devkit/core';
+import { JsonValue } from '@angular-devkit/core';
 import { UpdateRecorder } from '@angular-devkit/schematics';
+import { Node } from 'jsonc-parser';
 
-export function findPropertyInAstObject(
-  node: JsonAstObject,
-  propertyName: string
-): JsonAstNode | null {
-  let maybeNode: JsonAstNode | null = null;
-  for (const property of node.properties) {
-    if (property.key.value == propertyName) {
-      maybeNode = property.value;
-    }
-  }
-
-  return maybeNode;
-}
 
 function _buildIndent(count: number): string {
   return '\n' + new Array(count + 1).join(' ');
@@ -21,47 +9,50 @@ function _buildIndent(count: number): string {
 
 export function appendPropertyInAstObject(
   recorder: UpdateRecorder,
-  node: JsonAstObject,
+  node: Node,
   propertyName: string,
   value: JsonValue,
   indent: number
 ) {
   const indentStr = _buildIndent(indent);
 
-  if (node.properties.length > 0) {
+  if (node.parent?.children && node.parent.children.length > 0) {
     // Insert comma.
-    const last = node.properties[node.properties.length - 1];
-    recorder.insertRight(last.start.offset + last.text.replace(/\s+$/, '').length, ',');
+    recorder.insertLeft(node.offset + node.length, ',');
   }
 
-  recorder.insertLeft(
-    node.end.offset - 1,
-    '  ' +
-      `"${propertyName}": ${JSON.stringify(value, null, 2).replace(/\n/g, indentStr)}` +
-      indentStr.slice(0, -2)
-  );
+  if (node.parent) {
+    recorder.insertRight(
+      node.offset  + node.length,
+      indentStr +
+        `"${propertyName}": ${JSON.stringify(value, null, 2).replace(/\n/g, indentStr)}` +
+        indentStr.slice(0, -2)
+    );
+  } else {
+    throw new Error(`Cannot append property [${propertyName}] in root.`);
+  }
 }
 
 export function insertPropertyInAstObjectInOrder(
   recorder: UpdateRecorder,
-  node: JsonAstObject,
+  node: Node,
   propertyName: string,
   value: JsonValue,
   indent: number
 ) {
-  if (node.properties.length === 0) {
-    appendPropertyInAstObject(recorder, node, propertyName, value, indent);
-
-    return;
+  if (node.children === undefined) {
+    throw new Error(`Failed to insert JSON property ${propertyName}`)
   }
 
-  // Find insertion info.
-  let insertAfterProp: JsonAstKeyValue | null = null;
-  let prev: JsonAstKeyValue | null = null;
+  //Find insertion info.
+  let insertAfterProp: Node | null = null;
+  let prev: Node | null = null;
   let isLastProp = false;
-  const last = node.properties[node.properties.length - 1];
-  for (const prop of node.properties) {
-    if (prop.key.value > propertyName) {
+  const last = node.children[node.children.length - 1];
+  for (const prop of node.children) {
+    if(prop.children === undefined) continue;
+
+    if (prop.children[0].value > propertyName) {
       if (prev) {
         insertAfterProp = prev;
       }
@@ -75,7 +66,7 @@ export function insertPropertyInAstObjectInOrder(
   }
 
   if (isLastProp) {
-    appendPropertyInAstObject(recorder, node, propertyName, value, indent);
+    appendPropertyInAstObject(recorder, last, propertyName, value, indent);
 
     return;
   }
@@ -83,12 +74,12 @@ export function insertPropertyInAstObjectInOrder(
   const indentStr = _buildIndent(indent);
 
   const insertIndex =
-    insertAfterProp === null ? node.start.offset + 1 : insertAfterProp.end.offset + 1;
+    insertAfterProp === null ? node.offset + 1 : insertAfterProp.offset + insertAfterProp.length + 1;
 
+  const insertString =  `${indentStr}"${propertyName}": ${JSON.stringify(value, null, 2).replace(/\n/g, indentStr)}` +
+      (node.children && node.children.length > 0? ',' : '\n' );
   recorder.insertRight(
     insertIndex,
-    `${indentStr}` +
-      `"${propertyName}": ${JSON.stringify(value, null, 2).replace(/\n/g, indentStr)}` +
-      ','
+    insertString
   );
 }
