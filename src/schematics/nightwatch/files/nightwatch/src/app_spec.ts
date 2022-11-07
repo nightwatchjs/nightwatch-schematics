@@ -9,7 +9,7 @@ module.exports = {
     browser.end();
   },
 
-  'should check heading contains text Nightwatch.js': (browser: NightwatchBrowser) => {
-    browser.assert.containsText('#top-section h1', 'Nightwatch.js');
+  'should check heading contains text End-to-End Testing': (browser: NightwatchBrowser) => {
+    browser.assert.containsText('.hero-section h1', 'End-to-End Testing');
   },
 };

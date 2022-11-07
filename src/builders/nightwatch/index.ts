@@ -31,9 +31,9 @@ async function runNightwatch(
   const NightWatchTestPath = `${context.workspaceRoot}/nightwatch`;
   const NightwatchLauncher = path.join(process.cwd(), 'node_modules', '.bin', 'nightwatch');
   const TypeScriptCli = path.join(process.cwd(), 'node_modules', '.bin', 'tsc');
-  const compileCommand = `cd ${NightWatchTestPath}; ${TypeScriptCli} -p ${options.tsConfig};`;
+  const compileCommand = `cd "${NightWatchTestPath}"; "${TypeScriptCli}" -p ${options.tsConfig};`;
 
-  const nightwatchRunCommand = `${NightwatchLauncher} ${createNightwatchCommand(
+  const nightwatchRunCommand = `"${NightwatchLauncher}" ${createNightwatchCommand(
     options,
     NightwatchCommandLineOptions
   )}`;
