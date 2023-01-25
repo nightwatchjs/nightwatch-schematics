@@ -10,6 +10,6 @@ module.exports = {
   },
 
   'should check heading contains text Nightwatch.js': (browser: NightwatchBrowser) => {
-    browser.assert.containsText('#top-section h1', 'Nightwatch.js');
+    browser.assert.containsText('.nightwatch-title', 'Nightwatch.js');
   },
 };
