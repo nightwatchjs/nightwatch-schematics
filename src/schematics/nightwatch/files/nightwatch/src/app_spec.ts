@@ -1,15 +1,18 @@
-import { NightwatchBrowser } from 'nightwatch';
+describe('Ecosia.org Demo', function () {
+  this.tags = ['demo'];
 
-module.exports = {
-  before: (browser: NightwatchBrowser) => {
-    browser.url(browser.launch_url);
-  },
+  before((browser) => browser.navigateTo('https://www.ecosia.org/'));
 
-  after: (browser: NightwatchBrowser) => {
-    browser.end();
-  },
+  it('Demo test ecosia.org', function (browser) {
+    browser
+      .waitForElementVisible('body')
+      .assert.titleContains('Ecosia')
+      .assert.visible('input[type=search]')
+      .setValue('input[type=search]', 'nightwatch')
+      .assert.visible('button[type=submit]')
+      .click('button[type=submit]')
+      .assert.textContains('.layout__content', 'Nightwatch.js');
+  });
 
-  'should check heading contains text Nightwatch.js': (browser: NightwatchBrowser) => {
-    browser.assert.containsText('.nightwatch-title', 'Nightwatch.js');
-  },
-};
+  after((browser) => browser.end());
+});
