@@ -1,17 +1,15 @@
-describe('Ecosia.org Demo', function () {
-  this.tags = ['demo'];
+describe('Sample Example', function () {
+  before((browser) => browser.navigateTo('https://nightwatchjs.org/'));
 
-  before((browser) => browser.navigateTo('https://www.ecosia.org/'));
-
-  it('Demo test ecosia.org', function (browser) {
+  it('Sample test nightwatchjs.org', function (browser) {
     browser
+      .windowSize('current', 1920, 1080)
       .waitForElementVisible('body')
-      .assert.titleContains('Ecosia')
-      .assert.visible('input[type=search]')
-      .setValue('input[type=search]', 'nightwatch')
-      .assert.visible('button[type=submit]')
-      .click('button[type=submit]')
-      .assert.textContains('.layout__content', 'Nightwatch.js');
+      .assert.titleContains('Nightwatch')
+      .assert.visible('.DocSearch-Button')
+      .click('.copy.btn-copy')
+      .assert.textContains('.npm-install', 'Code copied')
+      .assert.textContains('.brand-message', 'End-to-End Testing');
   });
 
   after((browser) => browser.end());
