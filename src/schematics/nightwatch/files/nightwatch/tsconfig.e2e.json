@@ -1,9 +1,0 @@
-{
-  "compilerOptions": {
-    "outDir": "../out-tsc/nightwatch",
-    "module": "commonjs",
-    "target": "es5",
-    "types": ["node"]
-  },
-  "include": ["src/**/*"]
-}
