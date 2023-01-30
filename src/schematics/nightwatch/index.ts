@@ -147,7 +147,13 @@ function updateDependencies(options: SchematicsOptions): Rule {
         break;
     }
 
-    const addDependencies = of('nightwatch', '@types/node', '@types/nightwatch', driver).pipe(
+    const addDependencies = of(
+      'nightwatch',
+      '@types/node',
+      'ts-node',
+      '@types/nightwatch',
+      driver
+    ).pipe(
       concatMap((packageName: string) => getLatestNodeVersion(packageName)),
       map((packageFromRegistry: NodePackage) => {
         const { name, version } = packageFromRegistry;
