@@ -1,15 +1,16 @@
-import { NightwatchBrowser } from 'nightwatch';
+describe('Sample Example', function () {
+  before((browser) => browser.navigateTo('https://nightwatchjs.org/'));
 
-module.exports = {
-  before: (browser: NightwatchBrowser) => {
-    browser.url(browser.launch_url);
-  },
+  it('Sample test nightwatchjs.org', function (browser) {
+    browser
+      .windowSize('current', 1920, 1080)
+      .waitForElementVisible('body')
+      .assert.titleContains('Nightwatch')
+      .assert.visible('.DocSearch-Button')
+      .click('.copy.btn-copy')
+      .assert.textContains('.npm-install', 'Code copied')
+      .assert.textContains('.brand-message', 'End-to-End Testing');
+  });
 
-  after: (browser: NightwatchBrowser) => {
-    browser.end();
-  },
-
-  'should check heading contains text Nightwatch.js': (browser: NightwatchBrowser) => {
-    browser.assert.containsText('#top-section h1', 'Nightwatch.js');
-  },
-};
+  after((browser) => browser.end());
+});

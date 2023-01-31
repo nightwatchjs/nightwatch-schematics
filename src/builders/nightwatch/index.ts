@@ -28,22 +28,12 @@ async function runNightwatch(
     'verbose',
   ];
 
-  const NightWatchTestPath = `${context.workspaceRoot}/nightwatch`;
   const NightwatchLauncher = path.join(process.cwd(), 'node_modules', '.bin', 'nightwatch');
-  const TypeScriptCli = path.join(process.cwd(), 'node_modules', '.bin', 'tsc');
-  const compileCommand = `cd ${NightWatchTestPath}; ${TypeScriptCli} -p ${options.tsConfig};`;
 
   const nightwatchRunCommand = `${NightwatchLauncher} ${createNightwatchCommand(
     options,
     NightwatchCommandLineOptions
   )}`;
-
-  const status = await runCommand(compileCommand, context);
-  if (status.success) {
-    console.log('✅ Nightwatch tests successfully compiled');
-  } else {
-    console.log('😞 Something went wrong');
-  }
 
   return runCommand(nightwatchRunCommand, context);
 }
