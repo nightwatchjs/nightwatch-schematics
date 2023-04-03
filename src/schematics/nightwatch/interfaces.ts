@@ -5,6 +5,7 @@ export interface SchematicsOptions {
   environment: string;
   noBuilder: string;
   cucumberRunner: string;
+  componentTesting: boolean;
   __version__: number;
 }
 

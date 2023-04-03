@@ -152,6 +152,7 @@ function updateDependencies(options: SchematicsOptions): Rule {
       '@types/node',
       'ts-node',
       '@types/nightwatch',
+      '@nightwatch/angular',
       driver
     ).pipe(
       concatMap((packageName: string) => getLatestNodeVersion(packageName)),
@@ -184,6 +185,7 @@ function addNightwatchConfigFile(options: SchematicsOptions): Rule {
 
     const { projects } = angularJsonValue;
     let cucumberRunner = '';
+    let angularPlugin = '';
 
     return chain(
       Object.keys(projects).map((name) => {
@@ -199,6 +201,10 @@ function addNightwatchConfigFile(options: SchematicsOptions): Rule {
           },`;
         }
 
+        if (options.componentTesting) {
+          angularPlugin = `'@nightwatch/angular'`;
+        }
+
         return mergeWith(
           apply(url('./files'), [
             move(normalize(project.root)),
@@ -207,6 +213,7 @@ function addNightwatchConfigFile(options: SchematicsOptions): Rule {
               ...options,
               root: project.root ? `${project.root}/` : project.root,
               cucumberRunner,
+              angularPlugin
             }),
           ])
         );

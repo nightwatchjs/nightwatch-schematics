@@ -36,6 +36,11 @@
       "default": "firefox",
       "x-prompt": "Which browser do you want to run the test on? (default: firefox)"
     },
+    "componentTesting": {
+      "default": false,
+      "type": "boolean",
+      "x-prompt": "Would you like to enable component testing?"
+    },
     "noBuilder": {
       "description": "When true, the angular.json file will not be modified to add Nightwatch commands, requiring the user to run Nightwatch from the command line independent of the Angular CLI",
       "type": "boolean"
