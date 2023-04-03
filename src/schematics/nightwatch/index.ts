@@ -130,6 +130,13 @@ function updateDependencies(options: SchematicsOptions): Rule {
       );
     }
 
+    const dependencyList = [
+      'nightwatch',
+      '@types/node',
+      'ts-node',
+      '@types/nightwatch',
+    ]
+
     let driver: string;
 
     switch (options.environment) {
@@ -147,13 +154,14 @@ function updateDependencies(options: SchematicsOptions): Rule {
         break;
     }
 
+    dependencyList.push(driver);
+
+    if (options.componentTesting){
+      dependencyList.push('@nightwatch/angular');
+    }
+
     const addDependencies = of(
-      'nightwatch',
-      '@types/node',
-      'ts-node',
-      '@types/nightwatch',
-      '@nightwatch/angular',
-      driver
+      ...dependencyList
     ).pipe(
       concatMap((packageName: string) => getLatestNodeVersion(packageName)),
       map((packageFromRegistry: NodePackage) => {
