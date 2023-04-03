@@ -69,6 +69,21 @@ describe('@nightwatch/schematics', async function () {
       });
   });
 
+  it('should add angular plugin to nightwatch config', async function () {
+    runner
+      .runSchematicAsync(
+        'ng-add',
+        { environment: 'chrome', componentTesting: true },
+        await getWorkspaceTree()
+      )
+      .toPromise()
+      .then((tree) => {
+        expect(tree.readContent('/projects/sandbox/nightwatch.conf.js')).to.match(
+          /[a-zA-Z]+: '@nightwatch\/angular'/
+        );
+      });
+  });
+
   it('should add nightwatch config, and tests in workspace', async function () {
     runner
       .runSchematicAsync(
