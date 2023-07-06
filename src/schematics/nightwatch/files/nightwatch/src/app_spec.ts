@@ -7,9 +7,9 @@ describe('Sample Example', function () {
       .waitForElementVisible('body')
       .assert.titleContains('Nightwatch')
       .assert.visible('.DocSearch-Button')
-      .click('.copy.btn-copy')
-      .assert.textContains('.npm-install', 'Code copied')
-      .assert.textContains('.brand-message', 'End-to-End Testing');
+      .click('.hero__action-copy-command-button')
+      .assert.textContains('.hero__action-copy-command-button', 'Copied')
+      .assert.textContains('.hero__heading', 'Nightwatch v3');
   });
 
   after((browser) => browser.end());
