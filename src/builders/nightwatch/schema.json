@@ -74,6 +74,16 @@
       "description": "Shows extended selenium command logging during the session",
       "default": false
     },
+    "serial": {
+      "type": "boolean",
+      "description": "Run tests sequentially",
+      "default": false
+    },
+    "reuse-browser": {
+      "type": "boolean",
+      "description": "Reuse the browser session, requires serial",
+      "default": false
+    },
     "devServerTarget": {
       "type": "string",
       "description": "Dev server target to run tests against."
