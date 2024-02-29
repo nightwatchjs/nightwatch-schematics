@@ -26,6 +26,8 @@ async function runNightwatch(
     'output',
     'headless',
     'verbose',
+    'serial',
+    'reuse-browser',
   ];
 
   const NightwatchLauncher = path.join(process.cwd(), 'node_modules', '.bin', 'nightwatch');
